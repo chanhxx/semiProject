@@ -87,14 +87,101 @@ public class NoticeDao {
 	}
 
 
+	// 공지사항 게시글 등록하는 이벤트
 	public int insertNotice(Connection conn, Notice notice) {
 		
 		int result = 0;
 		
+		PreparedStatement pstmt = null;
 		
+		// insert 는 ResultSet 필요 없음
 		
+		String sql = prop.getProperty("insertNotice");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, notice.getNoticeTitle());
+			pstmt.setString(2, notice.getNoticeContent());
+			
+			result = pstmt.executeUpdate(); // result 에 담아주기
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
 		
 		return result;
 	}
+
+
+	// 조회수 증가시키는 메소드
+	public int increaseCount(Connection conn, int nno) {
+		
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+		
+		String sql = prop.getProperty("increaseCount");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, nno);
+			
+			result = pstmt.executeUpdate();
+					
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+	
+	
+	// 공지사항 게시글 하나 가져오는 메소드 (상세 페이지)
+	public Notice selectNotice(Connection conn, int nno) {
+		
+		Notice notice = null;
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("selectNotice");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			rset = pstmt.executeQuery();
+			
+			// 객체 하나니까 if
+			if(rset.next()) {
+				
+				notice = new Notice(rset.getInt("NOTICE_NO"),
+									rset.getString("NOTICE_TITLE"),
+									rset.getString("NOTICE_CONTENT"),
+									rset.getInt("COUNT"),
+									rset.getDate("CREATE_DATE"));
+				
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return notice;
+	}
+
+
+	
 
 }

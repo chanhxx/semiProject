@@ -40,4 +40,29 @@ public class NoticeService {
 		return result;
 	}
 
+	// 게시글 하나 가져오는 메소드
+	public Notice selectNotice(int nno) {
+		
+		Connection conn = getConnection(); // 커넥션 연결
+		
+		// 조회수 증가시키는 메소드로
+		int result = new NoticeDao().increaseCount(conn, nno);
+		
+		// 해당 게시글 받을 객체
+		Notice notice = null;
+		
+		if(result > 0) {
+			commit(conn);
+			// 객체 가져와서 담기
+			notice = new NoticeDao().selectNotice(conn, nno);
+			
+		} else {
+			rollback(conn);
+		}
+		
+		close(conn);
+		
+		return notice;
+	}
+
 }
