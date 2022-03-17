@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.uni.notice.model.service.NoticeService;
+
 /**
  * Servlet implementation class NoticeDeleteServlet
  */
@@ -26,8 +28,21 @@ public class NoticeDeleteServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		// 삭제할 공지사항 번호 가져오기
+		int nno = Integer.parseInt(request.getParameter("nno"));
+		
+		// 해당 공지사항 게시글 번호 넘겨서 있는지 int로 받아 오기
+		int result = new NoticeService().deleteNotice(nno);
+		
+		// 삭제할 게 있어서 성공하면
+		if(result > 0) {
+			// 공지사항 리스트 화면으로 이동
+			response.sendRedirect("listNotice.do");
+			
+		}
+		
+		
 	}
 
 	/**

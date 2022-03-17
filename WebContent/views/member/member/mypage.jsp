@@ -7,9 +7,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 <meta name="description" content="" />
 <meta name="author" content="" />
-<title>Shop Homepage - Start Bootstrap Template</title>
-<!-- Core theme CSS (includes Bootstrap)-->
-<link href="././resources/css/menu2_styles.css" rel="stylesheet" />
+<title>mypage</title>
+ <style>
+ 
+ #Members{
+     margin-left: 12%;
+    margin-top: 5%;
+    height:200px;
+    width:1400px;
+ }
+
+ 
+ #membut{
+ 
+   height:200px;
+    width:300px;
+ }
+ 
+ #mil{
+ 
+  margin-top: 5%;
+   width:1400px;
+ }
+h5{
+display: inline;
+}
+ </style>
+
+<link href="././resources/css/styles.css" rel="stylesheet" />
+ <link rel="stylesheet" href="../resource/css/main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 <body>
@@ -22,8 +49,6 @@
                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="<%=request.getContextPath() %>">Home</a></li>
                    <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath() %>/healthInfo.do">건강계산기</a>
-                   <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath() %>/noticeList.do">공지사항</a>
-                   <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath() %>/boardList.do">Q&A</a>
                    </li>
                    <li class="nav-item dropdown">
                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">상품</a>
@@ -35,33 +60,47 @@
                        </ul>
                    </li>
                </ul>
-               <form class="d-flex">
+              
+           </div>
+            <div align="right">
+               <form >
                    <button class="btn btn-outline-dark" type="submit">
                        <i class="bi-cart-fill me-1"></i>
                        Cart
                        <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
                    </button>
                    
+                                   
                    <button class="btn btn-outline-dark" type="submit">
-                   <a href = "<%=request.getContextPath() %>/LoginPage.do">로그인</a>
+                   <a href = "<%=request.getContextPath() %>/LoginPage.do">로그아웃</a>
                    </button>
-                   
                </form>
-           </div>
+               </div>
        </div>
    </nav>
-   
-   <!--
- 
+   <!-- Header-->
    <header class="bg-dark py-5">
        <div class="container px-4 px-lg-5 my-5">
            <div class="text-center text-white">
-               <h1 class="display-4 fw-bolder">Shop in style</h1>
-               <p class="lead fw-normal text-white-50 mb-0">With this shop homepage template</p>
+               <h1 class="display-4 fw-bolder">칼로리를 부탁해</h1>
+               <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
            </div>
        </div>
    </header>
-    -->
    
+    <strong><h4>MyPage</h5></strong>
+   <div id="mil">
+   
+  <strong><h5 style="margin-left: 250px"> Milege</h5></strong>
+   <strong><h5 style="margin-left: 470px">원</h5></strong>
+   <strong><h5 style="margin-left: 100px">Coupon</h5></strong>
+   <button style="margin-left: 355px" >조회</button>
+   </div>
+   <hr  width="1200px"  style="border: solid 2px black;">
+   <div id="Members">
+   <input id="membut" type="button" value="주문 목록"></input>
+     <input id="membut" type="button" value="회원 정보변경" style="margin-left: 200px;"></input>
+    <input id="membut" type="button" value="회원 탈퇴" style="margin-left: 200px;"></input>
+   </div>
 </body>
 </html>

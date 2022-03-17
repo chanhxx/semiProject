@@ -88,7 +88,7 @@ public class NoticeDao {
 
 
 	// 공지사항 게시글 등록하는 이벤트
-	public int insertNotice(Connection conn, Notice notice) {
+	public int insertNotice(Connection conn, Notice n) {
 		
 		int result = 0;
 		
@@ -101,8 +101,8 @@ public class NoticeDao {
 		try {
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, notice.getNoticeTitle());
-			pstmt.setString(2, notice.getNoticeContent());
+			pstmt.setString(1, n.getNoticeTitle());
+			pstmt.setString(2, n.getNoticeContent());
 			
 			result = pstmt.executeUpdate(); // result 에 담아주기
 			
@@ -157,6 +157,8 @@ public class NoticeDao {
 		try {
 			pstmt = conn.prepareStatement(sql);
 			
+			pstmt.setInt(1, nno);
+			
 			rset = pstmt.executeQuery();
 			
 			// 객체 하나니까 if
@@ -179,6 +181,73 @@ public class NoticeDao {
 		}
 		
 		return notice;
+	}
+
+
+	// 게시글 업데이트 하는 메소드
+	public int updateNotice(Connection conn, Notice n) {
+		
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+		
+		String sql = prop.getProperty("updateNotice");
+		
+		//System.out.println(sql + "===========dao sql");
+		//System.out.println(n + "============n");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, n.getNoticeTitle());
+			pstmt.setString(2, n.getNoticeContent());
+			// 형변환
+			pstmt.setInt(3, n.getNoticeNo());
+			
+			// executequery 아니고 update
+			result = pstmt.executeUpdate(); // result 넘겨줌
+			
+			//System.out.println(result + "===============dao");
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	
+	// 게시글 삭제하는 메소드
+	public int deleteNotice(Connection conn, int nno) {
+		
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+
+		String sql = prop.getProperty("deleteNotice");
+		
+		// 삭제니까 ResultSet 필요 없음
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, nno);
+			
+			// executequery 아니고 update
+			// UPDATE NOTICE SET STATUS='N' WHERE NOTICE_NO=? -> 상태변화
+			result = pstmt.executeUpdate(); // result 넘겨줌
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;	
 	}
 
 

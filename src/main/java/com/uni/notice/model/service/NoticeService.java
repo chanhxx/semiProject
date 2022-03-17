@@ -23,11 +23,11 @@ public class NoticeService {
 	}
 
 	// 게시글 등록하는 메소드
-	public int insertNotice(Notice notice) {
+	public int insertNotice(Notice n) {
 		
 		Connection conn = getConnection(); // 커넥션 연결
 		
-		int result = new NoticeDao().insertNotice(conn, notice);
+		int result = new NoticeDao().insertNotice(conn, n);
 		
 		if(result > 0) {
 			commit(conn);
@@ -63,6 +63,44 @@ public class NoticeService {
 		close(conn);
 		
 		return notice;
+	}
+
+	// 게시글 업데이트 하는 메소드
+	public int updateNotice(Notice n) {
+		
+		Connection conn = getConnection(); // 커넥션 연결
+		
+		// 넘겨 받은 결과 result에 담아서
+		int result = new NoticeDao().updateNotice(conn, n);
+		
+		if(result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		
+		close(conn);
+		
+		return result;
+	}
+
+	// 게시글 삭제하는 메소드 (상태값 n으로)
+	public int deleteNotice(int nno) {
+		
+		Connection conn = getConnection(); // 커넥션 연결
+		
+		// 넘겨 받은 결과 result에 담아서
+		int result = new NoticeDao().deleteNotice(conn, nno);
+		
+		if(result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		
+		close(conn);
+		
+		return result;
 	}
 
 }

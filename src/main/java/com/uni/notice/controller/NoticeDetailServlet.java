@@ -44,9 +44,8 @@ public class NoticeDetailServlet extends HttpServlet {
 			request.setAttribute("notice", notice);
 			// 상세 페이지로 화면 전환
 			request.getRequestDispatcher("views/notice/noticeDetailView.jsp").forward(request, response);
-		} else {
-			
 		}
+		
 	}
 
 	/**

@@ -40,9 +40,9 @@ public class NoticeListServlet extends HttpServlet {
 		request.setAttribute("list", list);
 		
 		// list 찍어보기
-		for(Notice n : list) {
+		/*for(Notice n : list) {
 			System.out.println("list : " + n);
-		}
+		}*/
 		
 		// 화면 전환 > 게시판 목록으로
 		request.getRequestDispatcher("views/notice/noticeListView.jsp").forward(request, response);

@@ -43,14 +43,8 @@ public class NoticeInsertServlet extends HttpServlet {
 		// 잘 담겨 왔다면
 		if(result > 0) {
 			
-			
 			// 해당 공지사항 게시글 상세 페이지로 이동
 			response.sendRedirect("noticeDetail.do");
-		
-		// 실패 시
-		} else {
-			
-			
 		}
 		
 		
