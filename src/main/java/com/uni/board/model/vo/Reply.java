@@ -5,7 +5,7 @@ import java.sql.Date;
 import lombok.Data;
 
 @Data
-public class A_Reply {
+public class Reply {
 	
 	private int replyNo;
 	private int refBoardNo;
