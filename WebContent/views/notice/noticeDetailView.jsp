@@ -1,9 +1,11 @@
 <%@page import="com.uni.notice.model.vo.Notice"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    
 <%
 	// servlet에서 넘긴 notice 객체 가져오기 - object로 넘어오기 때문에 형변환 꼭 해야 함
-	Notice n = (Notice)request.getAttribute("notice");
+	//Notice n = (Notice)request.getAttribute("notice");
 %>
 <!DOCTYPE html>
 <html>
@@ -41,24 +43,24 @@
 <body>
 	
 	<!-- menu -->
-	<%@ include file="../common/menu.jsp" %>
+	<jsp:include page = "../common/menu.jsp"/>
 	
 	<div class="outer">
 
 		<table id="detailArea" border="1">
 			<tr>
 				<td>제목</td>
-				<td colspan="3"><%= n.getNoticeTitle() %></td>
+				<td colspan="3">${notice.noticeTitle}</td>
 			</tr>
 			<tr>
 				<td>작성자</td>
 				<td>관리자</td>
 				<td>작성일</td>
-				<td><%= n.getCreateDate() %></td>
+				<td>${notice.createDate}</td>
 			</tr>
 			<tr>
 				<td colspan="4">
-					<p><%= n.getNoticeContent() %></p>
+					<p>${notice.noticeContent}</p>
 				</td>
 			</tr>	
 		</table>
@@ -70,13 +72,13 @@
 			<a href="noticeList.do">목록으로</a> &nbsp;&nbsp;
 				
 			
-			<% if(loginUser != null && loginUser.getUserId().equals("admin")) { %>
+			<c:if test="${ !empty sessionScope.loginUser && sessionScope.loginUser.userId == 'admin'}">
 			
 			<%-- 바로 url 연결해줘서 서블릿으로 연결 / 쿼리스트링으로 --%>
-			<a href="noticeUpdateForm.do?nno=<%=n.getNoticeNo()%>">수정하기</a> &nbsp;&nbsp;
-			<a href="noticeDelete.do?nno=<%=n.getNoticeNo()%>">삭제하기</a>
+			<a href="noticeUpdateForm.do?nno=${notice.noticeNo}">수정하기</a> &nbsp;&nbsp;
+			<a href="noticeDelete.do?nno=${notice.noticeNo}">삭제하기</a>
 		
-			<% } %>
+			</c:if>
 			
 		</div>
 	</div>

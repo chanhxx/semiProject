@@ -37,9 +37,16 @@ public class NoticeDeleteServlet extends HttpServlet {
 		
 		// 삭제할 게 있어서 성공하면
 		if(result > 0) {
+			// 메시지 띄우기
+			request.setAttribute("msg", "공지사항 삭제 성공");
 			// 공지사항 리스트 화면으로 이동
 			response.sendRedirect("noticeList.do");
 			
+		} else {
+			// 에러 메시지 띄우기
+			request.setAttribute("msg", "공지사항 삭제 실패");
+			// 공지사항 리스트 페이지로 이동
+			//response.sendRedirect("noticeList.do");
 		}
 		
 		

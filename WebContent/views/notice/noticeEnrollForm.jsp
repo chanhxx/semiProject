@@ -1,4 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,13 +37,13 @@
 <body>
 
 	<!-- menu -->
-	<%@ include file="../common/menu.jsp" %>
+	<jsp:include page = "../common/menu.jsp"/>
 	
 	<div class="outer">
 		
 		<h2 align="center">공지사항 작성</h2>
 		
-		<form id="enrollForm" action="<%= contextPath %>/noticeInsert.do" method="post" >
+		<form id="enrollForm" action="<%=request.getContextPath()%>/noticeInsert.do" method="post" >
 			
 			<table align="center">
 				<tr>

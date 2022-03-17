@@ -51,8 +51,15 @@ public class NoticeUpdateServlet extends HttpServlet {
 		
 		// 업데이트 잘 되었으면
 		if(result > 0) {
+			// 메시지 띄우기
+			request.setAttribute("msg", "공지사항 수정 성공");
 			// 상세 페이지로 이동
 			response.sendRedirect("noticeDetail.do?nno=" + nno);
+		} else {
+			// 에러 메시지 띄우기
+			request.setAttribute("msg", "공지사항 수정 실패");
+			// 공지사항 리스트 페이지로 이동
+			request.getRequestDispatcher("views/notice/noticeList.jsp");
 		}
 		
 		

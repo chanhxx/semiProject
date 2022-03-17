@@ -1,6 +1,8 @@
 <%@page import="com.uni.notice.model.vo.Notice"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <%
 	// 해당 공지사항 가져와서 내용 띄우기
 	// servlet 에서 넘긴 notice는 object 형이기 때문에 형변환 필요
@@ -41,21 +43,21 @@
 <body>
 
 	<!-- menu -->
-	<%@ include file="../common/menu.jsp" %>
+	<jsp:include page = "../common/menu.jsp"/>
 	
 	<div class="outer">
 		
 		
 		<h2 align="center">공지사항 수정</h2>
 		
-		<form id="updateForm" action="<%= contextPath %>/noticeUpdate.do" method="post" >
+		<form id="updateForm" action="<%=request.getContextPath()%>/noticeUpdate.do" method="post" >
 		
-			<input type="hidden" name="nno" value="<%= n.getNoticeNo() %>">
+			<input type="hidden" name="nno" value="${notice.noticeNo}">
 		
 			<table align="center">
 				<tr>
 					<td>제목</td>
-					<td colspan="3"><input type="text" name="title" value="<%= n.getNoticeTitle()%>"></td>
+					<td colspan="3"><input type="text" name="title" value="${notice.noticeTitle}"></td>
 				</tr>
 				
 				<tr>
@@ -64,7 +66,7 @@
 				</tr>
 				<tr>
 					<td colspan="4">
-						<textarea name="content" cols="60" rows="15" style="resize:none;"> value="<%= n.getNoticeContent()%>"</textarea>
+						<textarea name="content" cols="60" rows="15" style="resize:none;"> value="${notice.noticeContent}"</textarea>
 					</td>
 				</tr>	
 			</table>

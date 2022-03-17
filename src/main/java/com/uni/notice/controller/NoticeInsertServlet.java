@@ -42,8 +42,15 @@ public class NoticeInsertServlet extends HttpServlet {
 		
 		// 잘 담겨 왔다면
 		if(result > 0) {
-			
-			// 해당 공지사항 게시글 상세 페이지로 이동
+			// 세션 가져와서 메시지 띄우기 - 메뉴바 include 해서 가능
+			request.getSession().setAttribute("msg", "공지사항 등록 완료");
+			// 공지사항 리스트 페이지로 이동
+			response.sendRedirect("noticeList.do");
+		// 아니라면
+		} else {
+			// 에러 메시지 띄우기
+			request.setAttribute("msg", "공지사항 등록 실패");
+			// 공지사항 리스트 페이지로 이동
 			response.sendRedirect("noticeList.do");
 		}
 		

@@ -44,6 +44,10 @@ public class NoticeDetailServlet extends HttpServlet {
 			request.setAttribute("notice", notice);
 			// 상세 페이지로 화면 전환
 			request.getRequestDispatcher("views/notice/noticeDetailView.jsp").forward(request, response);
+		// 실패 시
+		} else {
+			// 에러 메시지 띄우기
+			request.setAttribute("msg", "공지사항 상세조회 실패");
 		}
 		
 	}

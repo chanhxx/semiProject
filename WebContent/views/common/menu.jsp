@@ -1,15 +1,7 @@
-<%@page import="com.uni.member.model.vo.Member"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     
-<%
-	Member loginUser = (Member)session.getAttribute("loginUser");
-
-	String msg = (String)session.getAttribute("msg");
-	
-	// path 변수로 선언
-	String contextPath = request.getContextPath();
-%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
 <html>
@@ -21,25 +13,20 @@
 <title>Shop Homepage - Start Bootstrap Template</title>
 <!-- Core theme CSS (includes Bootstrap)-->
 <link href="././resources/css/styles.css" rel="stylesheet" />
+<!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-
-<script>
-
-	$(function() {
-		var msg = "<%=msg%>";
-		if(msg != "null") {
-			alert(msg);
-			// 세션 남아 있을 필요 없으니 지워주기
-			<% session.removeAttribute("msg"); %>
-		}
-	})
-
-</script>
 
 
 </head>
 <body>
+
+	<c:if test="${ !empty msg }">
+		<script>
+			alert("${msg}");
+		</script>
+		<c:remove var="msg" scope="session"/>
+	</c:if>
+	
 	<!-- Navigation-->
    	<nav class="navbar navbar-expand-lg navbar-light bg-light">
        	<div class="container px-4 px-lg-5">
@@ -64,31 +51,27 @@
               	 </ul>
               	 <form class="d-flex">
               	 
-                 	  <button class="btn btn-outline-dark" type="submit">
-                      	 <i class="bi-cart-fill me-1"></i>
-                      	 Cart
+                 	<button class="btn btn-outline-dark" type="submit">
+             	  	 	<i class="bi-cart-fill me-1"></i>
+                      	Cart
                        	<span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
                    	</button>
-                   
-                   	<% if(loginUser == null)  { %>
-                   
-                   	<button class="btn btn-outline-dark" type="submit">
-                   			<a href = "<%=request.getContextPath() %>/LoginPage.do">로그인</a>
-                  	</button>
-                   
-					<% } else { %>
-                   
-                   		<div id = "userInfo">
-							<b style = "color:white;"><%=loginUser.getUserName() %> 님 </b> 의 방문을 환영합니다.
-							<br><br>
-							<div class ="btns" align="center">
-								<a href = "<%=request.getContextPath() %>/mypageMember.do">마이페이지</a>
-								<a href = "<%=request.getContextPath() %>/logoutMember.do">로그아웃</a>
-							</div>
-						</div>
+					
+					&nbsp;
+					
+                  	<!-- 로그인 전 -->
+	                <c:if test="${ empty sessionScope.loginUser }">
+		                <button class="btn btn-outline-dark" type="submit">
+						<a href="<%=request.getContextPath()%>/LoginPage.do">로그인</a>
+					</button>
+	                </c:if>
 		
-					<% } %>
-                   
+					<!-- 로그인 후  -->
+	                <c:if test="${ !empty sessionScope.loginUser }">
+		                <label>${ sessionScope.loginUser.userName }님 환영합니다</label> &nbsp;&nbsp;
+		                <a href="mypageMember.do">마이페이지</a> &nbsp;
+		                <a href="logoutMember.do">로그아웃</a>
+	                </c:if>
                </form>
            </div>
        </div>
