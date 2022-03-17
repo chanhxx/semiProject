@@ -38,7 +38,7 @@ public class NoticeDeleteServlet extends HttpServlet {
 		// 삭제할 게 있어서 성공하면
 		if(result > 0) {
 			// 공지사항 리스트 화면으로 이동
-			response.sendRedirect("listNotice.do");
+			response.sendRedirect("noticeList.do");
 			
 		}
 		

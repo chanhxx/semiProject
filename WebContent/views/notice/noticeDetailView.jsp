@@ -31,6 +31,8 @@
 	
 	#detailArea p{height:150px;}
 	
+	.btns{margin:atuo; margin-bottom:50px}
+	
 	.btns a{text-decoration:none; color:black;}
 	
 </style>
@@ -78,8 +80,6 @@
 			
 		</div>
 	</div>
-	
-	<br>
 	
 	<!-- footer-->
    	<jsp:include page = "../common/footer.jsp"/>

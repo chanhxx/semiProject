@@ -13,7 +13,7 @@ import com.uni.notice.model.vo.Notice;
 /**
  * Servlet implementation class NoticeUpdateServlet
  */
-@WebServlet("/notideUpdate.do")
+@WebServlet("/noticeUpdate.do")
 public class NoticeUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -29,6 +29,8 @@ public class NoticeUpdateServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		request.setCharacterEncoding("UTF-8");
 		
 		// 수젇한 제목, 내용, 게시글 번호 가져와서 객체에 담기
 		String title = request.getParameter("title");
@@ -50,7 +52,7 @@ public class NoticeUpdateServlet extends HttpServlet {
 		// 업데이트 잘 되었으면
 		if(result > 0) {
 			// 상세 페이지로 이동
-			response.sendRedirect("detailNotice.do?nno=" + nno);
+			response.sendRedirect("noticeDetail.do?nno=" + nno);
 		}
 		
 		

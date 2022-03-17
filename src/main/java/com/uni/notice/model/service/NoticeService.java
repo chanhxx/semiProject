@@ -21,7 +21,7 @@ public class NoticeService {
 		
 		return list; // list 리턴
 	}
-
+	
 	// 게시글 등록하는 메소드
 	public int insertNotice(Notice n) {
 		

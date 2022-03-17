@@ -33,7 +33,6 @@ public class ProductService {
 		return list;
 	}
 
-	/*
 	public ArrayList<Product> topProduct() {
 		
 		Connection conn = getConnection();
@@ -41,7 +40,30 @@ public class ProductService {
 		ArrayList<Product> list = new ProductDao().topProduct(conn);
 		
 		close(conn);
+		
 		return list;
 	}
-	*/
+
+	public Product selectProduct(int no) {
+		
+		Connection conn = getConnection();
+		
+		Product p = new ProductDao().selectProduct(conn, no);
+		
+		close(conn);
+		
+		return p;
+	}
+
+	public Product changeProduct(int q, String name) {
+		
+		Connection conn = getConnection();
+		
+		Product p = new ProductDao().changeProduct(conn, q, name);
+		
+		close(conn);
+		
+		return p;
+	}
+
 }

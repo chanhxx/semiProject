@@ -23,7 +23,9 @@
 	}
 	
 	.searchArea{
+		margin:auto;
 		margin-top:50px;
+		margin-bottom:30px;
 	}
 	
 	.table>tbody>tr:hover{
@@ -53,11 +55,13 @@
                   <table class="table">
                     
                     <thead class=" text-primary">
+                    
                       <th>No</th>
                       <th>Title</th>
                       <th>Writer</th>
                       <th>Count</th>
                       <th>Date</th>
+                      
                     </thead>
                     
                     <tbody>
@@ -88,9 +92,7 @@
         </div>
       </div>
     </div>
-		         	
-		         	
-	<br>        	
+	        	       	
    	<form class="searchArea" align="center">
         <select id="condition" name="condition">
            <option value="title">제목</option>
@@ -100,15 +102,14 @@
         <button type="submit">검색하기</button>
   	</form>
 	
-	
-	<br><br>
-     <div align="center">
+     <div id="insertBtn" align="center">
         <% if(loginUser != null && loginUser.getUserId().equals("admin")) { %>
-        
-        <%-- 클릭 시 작성하기 폼으로 화면 전환하는 서블릿 연결 --%>
-        <button onclick="location.href='<%=contextPath%>/noticeEnrollForm.do'">작성하기</button> 
-     <% } %>
-     </div>
+	        <%-- 클릭 시 작성하기 폼으로 화면 전환하는 서블릿 연결 --%>
+	        <button onclick="location.href='<%=contextPath%>/noticeEnrollForm.do'">작성하기</button>
+     	<% } %>
+    </div>
+     
+	<br>
 	
 	<script>
 		

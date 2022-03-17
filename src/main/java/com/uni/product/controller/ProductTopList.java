@@ -32,12 +32,14 @@ public class ProductTopList extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		/*
+		
 		ArrayList<Product> list = new ProductService().topProduct();
+		
 		//System.out.println(list);
+
 		response.setContentType("application/json; charset=utf-8"); 
 		new Gson().toJson(list, response.getWriter());
-		*/
+
 	}
 
 	/**

@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,10 +10,19 @@
 	.outer{
 		margin:auto;
 		margin-top:50px;
+		margin-bottom:50px;
 	}
 	
-	#enrollForm{width:60%; margin:auto;}
-	#enrollForm>table{border:1px solid black;}
+	#enrollForm{
+		width:60%;
+		margin:auto;
+	}
+	
+	#enrollForm>table{
+		border:1px solid black;
+	
+	}
+	
 	#enrollForm>table input{
 		width:100%;
 		box-sizing:border-box;
@@ -29,11 +37,11 @@
 	<%@ include file="../common/menu.jsp" %>
 	
 	<div class="outer">
-		<br>
 		
-		<h2>공지사항 작성</h2>
+		<h2 align="center">공지사항 작성</h2>
 		
 		<form id="enrollForm" action="<%= contextPath %>/noticeInsert.do" method="post" >
+			
 			<table align="center">
 				<tr>
 					<td>제목</td>
@@ -57,6 +65,7 @@
 			</div>
 		</form>
 	</div>
+
 	
 	
 	<!-- footer-->
