@@ -8,7 +8,7 @@ import lombok.Data;
 public class Board {
 
 	private int boardNo;
-	private int writerNo;
+	private String boardWriter;
 	private String category;
 	private String boardTitle;
 	private String boardContent;
