@@ -40,7 +40,8 @@
            <div class="collapse navbar-collapse" id="navbarSupportedContent">
                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="<%=request.getContextPath() %>">Home</a></li>
-                   <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath() %>/healthInfo.do">건강계산기</a>  
+                   <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath() %>/healthInfo.do">건강계산기</a>
+                   </li>
                    <li class="nav-item dropdown">
                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">상품</a>
                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -49,9 +50,6 @@
                            <li><a class="dropdown-item" href="<%=request.getContextPath() %>/selectListProduct.do?category=1">닭가슴살</a></li>
                            <li><a class="dropdown-item" href="<%=request.getContextPath() %>/selectListProduct.do?category=3">도시락</a></li>
                        </ul>
-                   </li>
-                   <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath() %>/noticeList.do">공지사항</a>
-                   <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath() %>/boardList.do">Q&A</a>
                    </li>
                </ul>
               

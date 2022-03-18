@@ -64,7 +64,7 @@ public class MemberDao {
 			close(rset);
 			close(pstmt);
 		}
-		//System.out.println(loginUser);
+		System.out.println(loginUser);
 		return loginUser;
 	}
 	public int insertMember(Connection conn, Member mem) {

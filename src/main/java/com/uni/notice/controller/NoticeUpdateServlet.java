@@ -30,7 +30,7 @@ public class NoticeUpdateServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		request.setCharacterEncoding("UTF-8");
+		//request.setCharacterEncoding("UTF-8");
 		
 		// 수젇한 제목, 내용, 게시글 번호 가져와서 객체에 담기
 		String title = request.getParameter("title");

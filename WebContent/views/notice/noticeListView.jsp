@@ -4,10 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<%
-	// 공지사항 리스트 전체 가져오기
-	ArrayList<Notice> list = (ArrayList<Notice>)request.getAttribute("list");
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -89,8 +85,7 @@
 			                     <td>관리자</td>
 			                     <td>${list[st.index].count}</td>
 			                     <td>${list[st.index].createDate}</td>
-			                   </tr>
-			                   
+			                   	</tr>
 			                 </c:forEach>
 			            </c:if>
   

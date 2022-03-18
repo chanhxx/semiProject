@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
 import com.uni.board.model.service.BoardService;
 import com.uni.board.model.vo.Board;
 import com.uni.notice.model.service.NoticeService;
@@ -45,8 +46,13 @@ public class BoardListServlet extends HttpServlet {
 			System.out.println("list : " + n);
 		}
 		
+		// json 으로 변환 설정
+		response.setContentType("application/json; charset=utf-8");
+		// getWriter() 메소드를 사용해야 데이터를 전달
+		new Gson().toJson(list, response.getWriter());
+		
 		// 화면 전환 > 게시판 목록으로
-		request.getRequestDispatcher("views/board/boardListView.jsp").forward(request, response);
+		//request.getRequestDispatcher("views/board/boardListView.jsp").forward(request, response);
 		
 	}
 

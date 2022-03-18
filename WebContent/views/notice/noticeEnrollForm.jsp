@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 
 <style>
@@ -40,11 +40,12 @@
 	<jsp:include page = "../common/menu.jsp"/>
 	
 	<div class="outer">
+		<br>
 		
-		<h2 align="center">공지사항 작성</h2>
+		<h2 align="center">공지사항 작성하기</h2>
 		
 		<form id="enrollForm" action="<%=request.getContextPath()%>/noticeInsert.do" method="post" >
-			
+		
 			<table align="center">
 				<tr>
 					<td>제목</td>
@@ -64,12 +65,11 @@
 			<br>
 			
 			<div class="btns" align="center">
-				<button type="submit">등록하기</button>
+				<button type="submit" id="insert">등록하기</button>
+				
 			</div>
 		</form>
 	</div>
-
-	
 	
 	<!-- footer-->
    	<jsp:include page = "../common/footer.jsp"/>
