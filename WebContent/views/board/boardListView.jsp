@@ -1,20 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="com.uni.board.model.vo.PageInfo"%>
+    
 <%-- jstl import --%> 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
-<%
-
-	PageInfo pi = (PageInfo)request.getAttribute("pi");
-	
-	//int listCount = pi.getListCount();
-	int currentPage = pi.getCurrentPage();
-	//int maxPage = pi.getMaxPage();
-	int startPage = pi.getStartPage();
-	int endPage = pi.getEndPage();
-
-%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -71,15 +61,16 @@
                
                   <table class="table" id="blist">
                   
-                    <thead class=" text-primary">
+                    <thead class="text-primary">
                       <th>No</th>
                       <th>Category</th>
-                      <th>Title</th>
                       <th>Writer</th>
                       <th>Date</th>
+                      <th>Count</th>
                     </thead>
                     
-                    <tbody>
+                    <tbody id="boardList">
+						
 						<%-- list가 비어있으면 --%>
 	                    <c:if test="${ empty list }">
 	                         <tr>
@@ -97,12 +88,13 @@
 			                 	<tr>
 			                     <td>${list[st.index].boardNo}</td>
 			                     <td>${list[st.index].category}</td>
-			                     <td>${list[st.index].boardTitle}</td>
 			                     <td>${list[st.index].boardWriter}</td>
 			                     <td>${list[st.index].createDate}</td>
+			                     <td>${list[st.index].count}</td>
 			                   	</tr>
 			                 </c:forEach>
 			            </c:if>
+			            
 		         	</tbody>
 		         	
 		          </table>
@@ -118,44 +110,53 @@
 	<!-- 페이징바 만들기 -->
 	<div class="pagingArea" align="center">
 		<!-- 맨 처음으로 (<<) -->
-		<button onclick="location.href='<%=request.getContextPath()%>/listBoard.do?currentPage=1'"> &lt;&lt; </button>
+		<button onclick="location.href='<%=request.getContextPath()%>/boardList.do?currentPage=1'"> &lt;&lt; </button>
 	
 		<!-- 이전페이지로(<) -->
 		<c:choose>
-			<c:when test="${currentPage == 1}">
+			<%-- 현재 페이지가 1인 경우 --%>
+			<c:when test="${pi.currentPage == 1}">
+				<%-- 이전 페이지로 가는 버튼 비활성화 --%>
 				<button disabled> &lt; </button>
 			</c:when>
-			
+			<%-- 그 외에는 --%>
 			<c:otherwise>
-				<button onclick="location.href='<%= request.getContextPath() %>/listBoard.do?currentPage=${currentPage - 1}'"> &lt; </button>
+				<%-- 현재 페이지에서 하나 뺀 페이지로 이동하도록 --%>
+				<button onclick="location.href='<%= request.getContextPath() %>/boardList.do?currentPage=${pi.currentPage - 1}'"> &lt; </button>
 			</c:otherwise>
 		</c:choose>
-		
-		
+		 
 		<!-- 페이지 목록 -->
-		<%for(int p=startPage; p<=endPage; p++){ %>
-			
-			<%if(p == currentPage){ %>
-				<button disabled> <%= p %> </button>
-			<%}else{ %>
-				<button onclick="location.href='<%=request.getContextPath() %>/listBoard.do?currentPage=<%= p %>'"> <%= p %> </button>
-			<%} %>
-			
-		<%} %>
+		<%-- var : for문 안에서 사용할 변수명 / begin : 초기값 / end : 최대값 / step : 증가값 --%>
+		<c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}" step="1">
+			<c:choose>
+				<%-- 현재 페이지에 해당하는 버튼 비활성화 --%>
+				<c:when test="${p == pi.currentPage}">
+					<button disabled> ${p} </button>
+				</c:when>
+				<%-- 그 외에는 클릭하면 해당 페이지로 넘어가도록 --%>
+				<c:otherwise>
+					<button onclick="location.href='<%=request.getContextPath() %>/boardList.do?currentPage=${p}'"> ${p} </button>
+				</c:otherwise>
+			</c:choose>
+		</c:forEach>
 		
 		<!-- 다음페이지로(>) -->
 		<c:choose>
-			<c:when test="${currentPage == maxPage}">
+			<%-- 현재 페이지가 마지막 페이지인 경우 --%>
+			<c:when test="${pi.currentPage == pi.maxPage}">
+				<%-- 다음 페이지로 가는 버튼 비활성화 --%>
 				<button disabled> &gt; </button>
 			</c:when>
-			
+			<%-- 그 외에는 --%>
 			<c:otherwise>
-				<button onclick="location.href='<%= request.getContextPath() %>/listBoard.do?currentPage=${currentPage + 1}'"> &gt; </button>
+				<%-- 현재 페이지에서 하나 더한 페이지로 이동하도록 --%>
+				<button onclick="location.href='<%= request.getContextPath() %>/boardList.do?currentPage=${pi.currentPage + 1}'"> &gt; </button>
 			</c:otherwise>
 		</c:choose>
 	
 		<!-- 맨 끝으로 (>>) -->
-		<button onclick="location.href='<%=request.getContextPath()%>/listBoard.do?currentPage=${maxPage}'"> &gt;&gt; </button>
+		<button onclick="location.href='<%=request.getContextPath()%>/boardList.do?currentPage=${pi.maxPage}'"> &gt;&gt; </button>
 		</div> 
 	</div>
 	
@@ -181,58 +182,44 @@
 		/*
 		$(function() {
 			
+			$("#boardList").empty(); // 리스트 가져올 때마다 비우고 새로 가져오도록
+			
 			$.ajax({
 				url: "boardList.do",
 				
 				type: "get",
 				
+				//dataType: "html",
+				
 				success: function(list) {
 					console.log(list);
 					
-					// table에 뿌려주기
-					// 제이쿼리 변수에 담을 것 - 제이쿼리에서 내장함수 모두 사용 가능
-					var $tableBody = $("#blist tbody");
-					
-					// 조회할 때마다 지우고 그려줘야 하기 때문에 일단 비워줄 것
-					$tableBody.html("");
-					
-					var $tr = $("<tr>");
+					var value = "";
 					
 					if(list != null) {
-						
-						$.each(list, function(i) {
-							
-							//var $tr = $("<tr>");
-							var $noTd = $("<td>").text(list[i].boardNo);
-							var $categoryTd = $("<td>").text(list[i].Category);
-							var $titleTd = $("<td>").text(list[i].boardTitle);
-							var $writerTd = $("<td>").text(list[i].boardWriter);
-							var $dateTd = $("<td>").text(list[i].createDate);
-							
-							$tr.append($noTd);
-							$tr.append($categoryTd);
-							$tr.append($titleTd);
-							$tr.append($writerTd);
-							$tr.append($dateTd);
-
-						})
+	                     
+						for(var i in list) {
+							value += '<tr>' +
+										'<td>' + list[i].boardNo + '</td>' +
+										'<td>' + list[i].category + '</td>' +
+										'<td>' + list[i].boardWriter + '</td>' +
+										'<td>' + list[i].createDate + '</td>' +
+										'<td>' + list[i].count + '</td>' +
+									 '</tr>';
+						}
 						
 					} else {
 						
-						var $td = $("<td>").text('존재하는 게시글이 없습니다.');
-						
-						$tr.append($td);
+						value = '<tr><td>존재하는 게시글이 없습니다.</td></tr>';
 					}
 					
-					$tableBody.append($tr);
-					
+					$("#boardList").html(value);
 				},
 				
 				error: function(e) {
 					console.log("ajax 통신 실패");
 				}
-				
-				
+
 			})
 			
 		})*/

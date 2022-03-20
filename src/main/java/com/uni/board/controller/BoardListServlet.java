@@ -95,12 +95,7 @@ public class BoardListServlet extends HttpServlet {
 		// jsp로 보내기
 		request.setAttribute("list", list);
 		request.setAttribute("pi", pi);
-		
-		// list 찍어보기
-		for(Board b : list) {
-			System.out.println("list : " + b);
-		}
-		
+
 		// json 으로 변환 설정
 		//response.setContentType("application/json; charset=utf-8");
 		// getWriter() 메소드를 사용해 jsp로 데이터를 전달

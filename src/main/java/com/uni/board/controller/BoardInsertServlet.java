@@ -58,7 +58,6 @@ public class BoardInsertServlet extends HttpServlet {
 			
 			// 카테고리, 제목, 내용 가져오기
 			String category = multiRequest.getParameter("category");
-			String title = multiRequest.getParameter("title");
 			String content = multiRequest.getParameter("content");
 			String pwd = multiRequest.getParameter("pwd");
 			
@@ -68,15 +67,16 @@ public class BoardInsertServlet extends HttpServlet {
 			
 			// 게시글 객체 생성
 			Board b = new Board();
+			
 			// set으로 설정
 			b.setCategory(category);
-			b.setBoardTitle(title);
 			b.setBoardContent(content.replaceAll("\n", "<br>"));
 			b.setBoardPwd(pwd);
+			b.setBoardWriter(String.valueOf(userNo));
 			
-			if(loginUser != null) {
+			/*if(loginUser != null) {
 				b.setBoardWriter(String.valueOf(userNo));
-			}
+			}*/
 			
 			// 첨부파일 객체 생성
 			Attachment at = null;

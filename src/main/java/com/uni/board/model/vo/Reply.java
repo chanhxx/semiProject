@@ -12,5 +12,19 @@ public class Reply {
 	private String replyContent;
 	private Date createDate;
 	private String status;
+	
+	public Reply() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	// selectRlist
+	public Reply(int replyNo, String replyContent, Date createDate) {
+		super();
+		this.replyNo = replyNo;
+		this.replyContent = replyContent;
+		this.createDate = createDate;
+	}
+	
+	
 
 }

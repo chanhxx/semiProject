@@ -15,6 +15,7 @@ import java.util.Properties;
 import com.uni.board.model.vo.Attachment;
 import com.uni.board.model.vo.Board;
 import com.uni.board.model.vo.PageInfo;
+import com.uni.board.model.vo.Reply;
 
 public class BoardDao {
 	
@@ -98,17 +99,13 @@ public class BoardDao {
 			
 			// 전체 리스트 가져오기 때문에 while로
 			while(rset.next()) {
-				
-				Board board = new Board(); // Board 객체 생성
-		  	 	// set으로 설정
-		  	 	board.setBoardNo(rset.getInt("BOARD_NO"));
-				board.setBoardWriter(rset.getString("USER_ID"));
-				board.setCategory(rset.getString("CATEGORY"));
-				board.setBoardTitle(rset.getString("BOARD_TITLE"));
-				board.setBoardContent(rset.getString("BOARD_CONTENT"));
-				board.setCount(rset.getInt("COUNT"));
-				board.setCreateDate(rset.getDate("CREATE_DATE"));
-				
+				 // Board 객체 생성
+				Board board = new Board(rset.getInt("BOARD_NO"),
+										rset.getString("USER_ID"),
+										rset.getString("CATEGORY"),
+										rset.getInt("COUNT"),
+										rset.getDate("CREATE_DATE"));
+
 				list.add(board); // list에 notice 객체 담기
 			}
 			
@@ -139,11 +136,15 @@ public class BoardDao {
 		try {
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setInt(1, Integer.parseInt(b.getBoardWriter()));
+			if(b.getBoardWriter() != null) {
+				pstmt.setInt(1, Integer.parseInt(b.getBoardWriter()));
+			} else {
+				pstmt.setInt(1, 0);
+			}
+			
 			pstmt.setString(2, b.getCategory());
-			pstmt.setString(3, b.getBoardTitle());
-			pstmt.setString(4, b.getBoardContent());
-			pstmt.setString(5, b.getBoardPwd());
+			pstmt.setString(3, b.getBoardContent());
+			pstmt.setString(4, b.getBoardPwd());
 			
 			result = pstmt.executeUpdate(); // result 에 담아주기
 			
@@ -213,16 +214,309 @@ public class BoardDao {
 		return result;
 	}
 
-
+	// 게시판 상세조회
 	public Board selectBoard(Connection conn, int bno) {
 		
+		Board b = null;
 		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
 		
+		String sql = prop.getProperty("selectBoard");
 		
-		return null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, bno);
+			
+			rset = pstmt.executeQuery();
+			
+			// 게시글 하나만 가져오니까 if
+			if(rset.next()) {
+				b = new Board(rset.getInt("BOARD_NO"),
+							  rset.getString("USER_ID"),
+							  rset.getString("CATEGORY"),
+							  rset.getString("BOARD_CONTENT"),
+							  rset.getString("BOARD_SECRET"),
+							  rset.getString("BOARD_PWD"),							  
+							  rset.getInt("COUNT"),
+							  rset.getDate("CREATE_DATE"));
+			}
+			
+			//System.out.println("b dao : " + b);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return b;
+	}
+
+	// 해당 게시글 첨부파일 가져오기
+	public Attachment selectAttachment(Connection conn, int bno) {
+		
+		Attachment at = null;
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("selectAttachment");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, bno);
+			
+			rset = pstmt.executeQuery();
+		
+			if(rset.next()) {
+				// 기본 생성자에 set 해서 하는 방법
+				at = new Attachment();
+				
+				at.setFileNo(rset.getInt("FILE_NO"));
+				at.setOriginName(rset.getString("ORIGIN_NAME"));
+				at.setChangeName(rset.getString("CHANGE_NAME"));
+
+			}
+			
+			//System.out.println("at ====== dao ====== : " + at);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return at;
 	}
 
 
+	// 해당 게시판 댓글 가져오기
+	public ArrayList<Reply> selectRList(Connection conn, int bno) {
+		
+		ArrayList<Reply> list = null;
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String sql = prop.getProperty("selectRlist");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, bno);
+			
+			rset = pstmt.executeQuery();
+			
+			list = new ArrayList<>();
+			
+			while(rset.next()) {
+				// list에 바로 객체 생성해서 담기
+				list.add(new Reply(rset.getInt("REPLY_NO"),
+								   rset.getString("REPLY_CONTENT"),
+								   rset.getDate("CREATE_DATE")));
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return list;	
+		
+	}
+
+
+	public int insertReply(Connection conn, Reply re) {
+		
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+		
+		// ResultSet 필요 없음
+		
+		String sql = prop.getProperty("insertReply");
+		
+		try {
+				
+			pstmt = conn.prepareStatement(sql);
+			// set으로 설정
+			pstmt.setInt(1, re.getRefBoardNo());
+			pstmt.setString(2, re.getReplyContent());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+
+	// 게시판 수정
+	public int updateBoard(Connection conn, Board b) {
+		
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+		
+		// ResultSet 필요 없음
+		
+		String sql = prop.getProperty("updateBoard");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, b.getCategory());
+			pstmt.setString(2, b.getBoardContent());
+			pstmt.setInt(3, b.getBoardNo());
+
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+
+	// 수정하는 게시판의 첨부파일 수정
+	public int updateAttachment(Connection conn, Attachment at) {
+		
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+		
+		// ResultSet 필요 없음
+		
+		String sql = prop.getProperty("updateAttachment");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, at.getOriginName());
+			pstmt.setString(2, at.getChangeName());
+			pstmt.setString(3, at.getFilePath());
+			pstmt.setInt(4, at.getFileNo());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+
+	public int deleteBoard(Connection conn, int bno) {
+		
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+
+		String sql = prop.getProperty("deleteBoard");
+		
+		// 삭제니까 ResultSet 필요 없음
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, bno);
+			
+			// executequery 아니고 update
+			// UPDATE QUESTION_BOARD SET STATUS='N' WHERE BOARD_NO=? -> 상태변화
+			result = pstmt.executeUpdate(); // result에 결과 담기
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+/*	트리거 생성으로 필요 없어짐
+	public int deleteAttachment(Connection conn, int bno) {
+		
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+
+		String sql = prop.getProperty("deleteAttachment");
+		
+		// 삭제니까 ResultSet 필요 없음
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, bno);
+			
+			// executequery 아니고 update
+			// UPDATE ATTACHMENT SET STATUS='N' WHERE BOARD_NO=? -> 상태변화
+			result = pstmt.executeUpdate(); // result에 결과 담기
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+		
+	}
+
+
+	public int deleteReply(Connection conn, int bno) {
+		
+		int result = 0;
+		
+		PreparedStatement pstmt = null;
+
+		String sql = prop.getProperty("deleteReply");
+		
+		// 삭제니까 ResultSet 필요 없음
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, bno);
+			
+			// executequery 아니고 update
+			// UPDATE ANSWER_REPLY SET STATUS='N' WHERE BOARD_NO=? -> 상태변화
+			result = pstmt.executeUpdate(); // result에 결과 담기
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+*/
 	
 
 

@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%-- jstl import --%> 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
     
 <!DOCTYPE html>
 <html>
@@ -64,10 +67,6 @@
 					</td>
 				</tr>
 				<tr>
-					<th>제목</th>
-					<td><input type="text" name="title"></td>
-				</tr>
-				<tr>
 					<th>내용</th>
 					<td>
 						<textarea rows="15" name="content" style="resize:none;"></textarea>
@@ -86,10 +85,6 @@
 					<td>
 						<label>
 					    	<input type="radio" id="public" name="public" disabled> 공개글
-					  	</label>
-					</td>
-					<td>
-						<label>
 					    	<input type="radio" id="secret" name="secret"> 비밀글
 					  	</label>
 					</td>
