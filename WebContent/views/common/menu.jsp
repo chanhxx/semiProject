@@ -3,7 +3,7 @@
 <%@ page import="com.uni.member.model.vo.Member"%>
 <%
 	Member loginUser = (Member) session.getAttribute("loginUser");
-	//String contextPath = request.getContextPath();
+	String msg = (String)session.getAttribute("msg");
 %>
 
 <!DOCTYPE html>
@@ -17,8 +17,21 @@
 <title>Shop Homepage - Start Bootstrap Template</title>
 <!-- Core theme CSS (includes Bootstrap)-->
 <link href="././resources/css/styles.css" rel="stylesheet" />
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+
+	$(function() {
+		var msg = "<%=msg%>";
+		if(msg != "null") {
+			alert(msg);
+			// 세션 남아 있을 필요 없으니 지워주기
+			<% session.removeAttribute("msg"); %>
+		}
+	})
+	
+</script>
+
 </head>
 <body>
 <!-- Navigation-->

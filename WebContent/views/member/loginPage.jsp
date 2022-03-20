@@ -35,8 +35,14 @@
         padding: 0.75rem 1rem;
       }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+    	function moveFocus() {
+    		$("#userId").focus();
+    	}
+    </script>
 </head>
-<body>
+<body onload="moveFocus();">
     
 
     <div class="container-fluid ps-md-0">
