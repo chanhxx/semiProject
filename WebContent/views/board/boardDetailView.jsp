@@ -97,7 +97,7 @@
 			<%-- 작성자가 본인이거나 관리자인 경우 수정, 삭제 버튼 활성화 --%>
 			<c:if test="${ !empty sessionScope.loginUser && sessionScope.loginUser.getUserId() == b.boardWriter
 							|| !empty sessionScope.loginUser && sessionScope.loginUser.userId == 'admin'}">
-				<button type="button" onclick="updateForm();">수정하기</button>
+				<button type="submit" onclick="location.href='<%=request.getContextPath()%>/boardUpdateForm.do?bno=${b.boardNo}';">수정하기</button>
 				<button type="button" onclick="deleteBoard();">삭제하기</button>
 			</c:if>
 		</div>
@@ -106,15 +106,22 @@
 			<%-- 게시글 번호 히든으로 가져올 수 있도록 --%>
 			<input type="hidden" name="bno" value="${b.boardNo}">
 		</form>
+		
+		
 		<script>
-			function updateForm(){
-				$("#postForm").attr("action", "<%=request.getContextPath()%>/boardUpdateForm.do");
-				$("#postForm").submit();
-			}
-			
+			// 삭제 버튼 클릭 시
 			function deleteBoard(){
-				$("#postForm").attr("action", "<%=request.getContextPath()%>/boardDelete.do");
-				$("#postForm").submit();
+				// 변수에 담아서
+				var result = confirm("정말 삭제하시겠습니까?");
+				// true 면 (삭제하려고 하면)
+				if(result) {
+					location.href="<%=request.getContextPath()%>/boardDelete.do?bno=${b.boardNo}";
+					alert("삭제가 완료되었습니다.");
+					return true;
+				// false 면 (삭제 취소)
+				} else {
+					return false;
+				}
 			}
 		</script>
 	</div>

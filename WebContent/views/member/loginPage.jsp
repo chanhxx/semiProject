@@ -1,10 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ page import = "com.uni.member.model.vo.Member" %>
-    <%
-    Member loginUser = (Member)session.getAttribute("loginUser");
-     
-    %>
+<%@ page import = "com.uni.member.model.vo.Member" %>
+ <%
+ 	Member loginUser = (Member)session.getAttribute("loginUser");
+ %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,14 +34,8 @@
         padding: 0.75rem 1rem;
       }
     </style>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script>
-    	function moveFocus() {
-    		$("#userId").focus();
-    	}
-    </script>
 </head>
-<body onload="moveFocus();">
+<body >
     
 
     <div class="container-fluid ps-md-0">
@@ -59,7 +52,7 @@
                       <form id = "loginForm" action="<%=request.getContextPath()%>/loginMember.do" method="post" onsubmit="return loginValidate();">
                       <div class="form-floating mb-3">
                      
-                        <input type="id" class="form-control" id="userId" placeholder="아이디를 입력하세요" name="userId">
+                        <input type="id" class="form-control" id="userId" placeholder="아이디를 입력하세요" name="userId" autofocus>
                         
                       </div>
                       <div class="form-floating mb-3">

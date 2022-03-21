@@ -2,8 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="com.uni.member.model.vo.Member"%>
 <%
-	Member loginUser = (Member) session.getAttribute("loginUser");
-	String msg = (String)session.getAttribute("msg");
+Member loginUser = (Member) session.getAttribute("loginUser");
+String contextPath = request.getContextPath();
 %>
 
 <!DOCTYPE html>
@@ -18,20 +18,6 @@
 <!-- Core theme CSS (includes Bootstrap)-->
 <link href="././resources/css/styles.css" rel="stylesheet" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-
-<script>
-
-	$(function() {
-		var msg = "<%=msg%>";
-		if(msg != "null") {
-			alert(msg);
-			// 세션 남아 있을 필요 없으니 지워주기
-			<% session.removeAttribute("msg"); %>
-		}
-	})
-	
-</script>
-
 </head>
 <body>
 <!-- Navigation-->
@@ -45,22 +31,23 @@
                    	<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath() %>/healthInfo.do">건강계산기</a>
                    	</li>
                    	<li class="nav-item dropdown">
-                       <a class="nav-link dropdown-toggle" id="navbarDropdown" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">상품</a>
-                       <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                       	   <li><a class="dropdown-item" href="<%=request.getContextPath() %>/productlistForm.do">모든상품</a></li>
-                           <li><a class="dropdown-item" href="<%=request.getContextPath() %>/selectProductListForm.do?category=2">단백질프로틴</a></li>
-                           <li><a class="dropdown-item" href="<%=request.getContextPath() %>/selectProductListForm.do?category=1">닭가슴살</a></li>
-                           <li><a class="dropdown-item" href="<%=request.getContextPath() %>/selectProductListForm.do?category=3">도시락</a></li>
-                       </ul>
+                       	<a class="nav-link dropdown-toggle" id="navbarDropdown" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">상품</a>
+                       	<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                       	   	<li><a class="dropdown-item" href="<%=request.getContextPath() %>/productlistForm.do">모든상품</a></li>
+                           	<li><a class="dropdown-item" href="<%=request.getContextPath() %>/selectProductListForm.do?category=2">단백질프로틴</a></li>
+                           	<li><a class="dropdown-item" href="<%=request.getContextPath() %>/selectProductListForm.do?category=1">닭가슴살</a></li>
+                           	<li><a class="dropdown-item" href="<%=request.getContextPath() %>/selectProductListForm.do?category=3">도시락</a></li>
+                       	</ul>
                    	</li>
-	                   	<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath() %>/noticeList.do">공지사항</a>
+   	                   	<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath() %>/noticeList.do">공지사항</a>
 	                   	<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath() %>/boardList.do">Q&A</a>
                    	</li>
                </ul>
 				<form class="d-flex">
-					<button class="btn btn-outline-dark" type="submit">
-						<i class="bi-cart-fill me-1"></i> Cart <span
-							class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+					<button class="btn btn-outline-dark" type="button"
+						onclick="location.href='<%=request.getContextPath()%>/cartList.do'">
+						<i class="bi-cart-fill me-1"></i>Cart
+						<span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
 					</button>
 
 					<% if (loginUser == null) { %>

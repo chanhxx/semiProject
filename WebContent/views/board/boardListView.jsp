@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="com.uni.board.model.vo.PageInfo"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
     
 <%-- jstl import --%> 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -224,7 +223,9 @@
 			})
 			
 		})*/
-
+		
+		
+		
 		// list 가 비어있지 않으면
 		<c:if test="${!empty list}">
 			$(function() {
@@ -232,16 +233,30 @@
 	   			$(".table>tbody>tr").click(function() {
 	   				// 게시글 번호 가져와서 변수에 담기
 	   				let bno = $(this).children().eq(0).text();
-	   				// 해당 공지사항 상세 페이지로 넘어가기
-	   				// 쿼리스트링으로 작성
-	   				location.href= "<%=request.getContextPath()%>/boardDetail.do?bno="+bno;
+	   				
+	   				// 
+	   				let url = "<%=request.getContextPath()%>/boardPwdCheckForm.do?bno="+bno;
+	   				let name = "boardPwdCheckPopup";
+   					let option = "width = 500, height = 300, top = 100, left = 200, toolbar = yes, location = no"
+					
+	   				open(url, name, option);
+
 	   			})
 	   		})
    		</c:if>
 			
 	</script>
+	<%-- 
+	// 비밀번호 입력창 팝업으로 열기
+	location.href= "<%=request.getContextPath()%>/boardPwdInsert.do?bno="+bno;
 	
-
+	상세 페이지로 넘어가는 서블릿
+	// 해당 게시글 상세 페이지로 넘어가기
+	// 쿼리스트링으로 작성
+	location.href= "<%=request.getContextPath()%>/boardDetail.do?bno="+bno;
+	--%>
+	
+	
 	<!-- footer-->
    	<jsp:include page = "../common/footer.jsp"/>
 
