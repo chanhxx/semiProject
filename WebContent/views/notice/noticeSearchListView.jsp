@@ -1,6 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="com.uni.notice.model.vo.Notice, java.util.ArrayList"%>
-    
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <%-- jstl import --%> 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -107,7 +106,7 @@
         </div>
       </div>
     </div>
-    
+	
 	<br>
 	
 	
@@ -126,23 +125,7 @@
 	   				location.href= "<%=request.getContextPath()%>/noticeDetail.do?nno="+nno;
 	   			})
 	   		})
-   		</c:if>
-			
-		/*
-		// 폼 제출 시
-		$("form").submit(function() {
-			
-			let input = $("#search").val();
-			
-			console.log(input);
-			// 검색창 비어 있으면 공지사항 리스트 페이지 다시 호출
-			if(input == "") {
-				//$(this).removeAttr("action");
-			} else {
-					
-			}
-			
-		})*/
+   		</c:if>	   		
 	</script>
 	
 	
@@ -151,6 +134,7 @@
 	
 	<!-- footer-->
    	<jsp:include page = "../common/footer.jsp"/>
-
+   	
+   	
 </body>
 </html>

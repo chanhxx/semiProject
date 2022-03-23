@@ -14,14 +14,14 @@ import com.uni.board.model.vo.Board;
 /**
  * Servlet implementation class BoardPwdInsertServlet
  */
-@WebServlet("/boardPwdCheckForm.do")
-public class BoardPwdCheckFormServlet extends HttpServlet {
+@WebServlet("/boardDeletePwdCheck.do")
+public class BoardDeletePwdCheckServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public BoardPwdCheckFormServlet() {
+    public BoardDeletePwdCheckServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -46,11 +46,11 @@ public class BoardPwdCheckFormServlet extends HttpServlet {
 			request.setAttribute("b", b);
 			//request.setAttribute("at", at);
 			// 게시글 비밀번호 입력창으로 전환
-			request.getRequestDispatcher("views/board/boardPwdCheckForm.jsp").forward(request, response);
+			request.getRequestDispatcher("views/board/boardDeletePwdCheck.jsp").forward(request, response);
 		
 		}	else {
 			// 에러메시지 jsp로 전달 - menubar 를 include 해서 가능
-			request.setAttribute("msg", "게시글 조회 실패");
+			request.setAttribute("msg", "게시글 삭제 실패");
 			// 에러페이지
 			request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
 		}

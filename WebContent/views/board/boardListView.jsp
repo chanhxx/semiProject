@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>게시글 목록</title>
 
 <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
 <!--     Fonts and icons     -->
@@ -61,11 +61,13 @@
                   <table class="table" id="blist">
                   
                     <thead class="text-primary">
-                      <th>No</th>
-                      <th>Category</th>
-                      <th>Writer</th>
-                      <th>Date</th>
-                      <th>Count</th>
+						<tr>
+                    		<th>No</th>
+		                    <th>Category</th>
+		                    <th>Writer</th>
+		                    <th>Date</th>
+		                    <th>Count</th>
+                    	</tr>
                     </thead>
                     
                     <tbody id="boardList">
@@ -86,11 +88,11 @@
 		                	<c:forEach items="${list}" varStatus="st">
 			                 	<%-- st.index : 0부터 순서대로 인덱스 실행 --%>
 			                 	<tr>
-			                     <td>${list[st.index].boardNo}</td>
-			                     <td>${list[st.index].category}</td>
-			                     <td>${list[st.index].boardWriter}</td>
-			                     <td>${list[st.index].createDate}</td>
-			                     <td>${list[st.index].count}</td>
+			                    	<td>${list[st.index].boardNo}</td>
+			                    	<td>${list[st.index].category}</td>
+			                    	<td>${list[st.index].boardWriter}</td>
+			                    	<td>${list[st.index].createDate}</td>
+			                    	<td>${list[st.index].count}</td>
 			                   	</tr>
 			                 </c:forEach>
 			            </c:if>
@@ -166,12 +168,12 @@
            <option value="title">제목</option>
            <option value="content">내용</option>
         </select>
-        <input type="search" name="search">
+        <input type="search" id="search" name="search">
         <button type="submit">검색하기</button>
   	</form>
 	
 	
-     <div id="insertBtn" align="center">
+    <div id="insertBtn" align="center">
 		<%-- 클릭 시 작성하기 폼으로 화면 전환하는 서블릿 연결 --%>
         <button onclick="location.href='<%=request.getContextPath()%>/boardEnrollForm.do'">작성하기</button>
     </div>
@@ -234,13 +236,20 @@
 	   				// 게시글 번호 가져와서 변수에 담기
 	   				let bno = $(this).children().eq(0).text();
 	   				
-	   				// 
-	   				let url = "<%=request.getContextPath()%>/boardPwdCheckForm.do?bno="+bno;
-	   				let name = "boardPwdCheckPopup";
-   					let option = "width = 500, height = 300, top = 100, left = 200, toolbar = yes, location = no"
+	   				// 관리자라면 비밀번호 입력 없이 바로 상세 조회 가능
+	   				if(${!empty sessionScope.loginUser && sessionScope.loginUser.userId == 'admin'}) {
+	   					
+	   					location.href= "<%=request.getContextPath()%>/boardDetail.do?bno="+bno;
+	   				
+	   				} else {
+	   					// 
+		   				let url = "<%=request.getContextPath()%>/boardDetailPwdCheck.do?bno="+bno;
+		   				let name = "boardPwdCheckPopup";
+	   					let option = "width = 500, height = 300, position = absolute , top = 50%, left = 50%"
+						
+		   				open(url, name, option);
+	   				}
 					
-	   				open(url, name, option);
-
 	   			})
 	   		})
    		</c:if>

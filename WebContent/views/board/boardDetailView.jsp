@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>게시글 상세 페이지</title>
 
 <style>
 	.outer{
@@ -107,24 +107,29 @@
 			<input type="hidden" name="bno" value="${b.boardNo}">
 		</form>
 		
-		
-		<script>
-			// 삭제 버튼 클릭 시
-			function deleteBoard(){
-				// 변수에 담아서
-				var result = confirm("정말 삭제하시겠습니까?");
-				// true 면 (삭제하려고 하면)
-				if(result) {
-					location.href="<%=request.getContextPath()%>/boardDelete.do?bno=${b.boardNo}";
-					alert("삭제가 완료되었습니다.");
-					return true;
-				// false 면 (삭제 취소)
-				} else {
-					return false;
-				}
-			}
-		</script>
 	</div>
+	
+
+	<script>
+		
+		// 삭제 버튼 클릭 시
+		function deleteBoard(){
+			
+			let bno = ${b.boardNo};
+			
+			let url = "<%=request.getContextPath()%>/boardDeletePwdCheck.do?bno="+bno;
+			let name = "boardPwdCheckPopup";
+			let option = "width = 500, height = 300, top = 50%, left = 50%, location = no"
+		
+			open(url, name, option);
+		}
+		
+	</script>
+		
+		
+	
+	
+	
 	
 	<div class="replyArea">
 		<!-- 댓글 작성하는 div -->
@@ -205,7 +210,7 @@
 			})
 		})
 		
-		
+		// 댓글 리스트 조회
 		function selectReplyList() {
 			
 			$("#replyList").empty(); // 조회할 때마다 비우고 다시 출력하도록
@@ -237,11 +242,13 @@
 				},
 				
 				error: function(){
-					console.log("ajax 통신실패 -댓글조회");
+					console.log("ajax 통신실패 - 댓글조회");
 				}
 				
 			})
 		}
+		
+		
 
 	</script>
 

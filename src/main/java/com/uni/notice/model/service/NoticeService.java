@@ -116,5 +116,43 @@ public class NoticeService {
 		
 		return result;
 	}
+	
+	
+	// 상단바에서 상품과 함께 공지사항 게시글 검색 메소드
+	public ArrayList<Notice> searhNotice(String search) {
+		
+		Connection conn = getConnection(); // 커넥션 연결
+		
+		// 검색단어 같이 던지기
+		ArrayList<Notice> list = new NoticeDao().searhNotice(conn, search);
+		
+		close(conn); // 커넥션 닫기
+		
+		return list; // list 리턴
+	}
+	
+	
+	// 검색 리스트 메소드
+	public ArrayList<Notice> searchList(String condition, String search) {
+		
+		Connection conn = getConnection(); // 커넥션 연결
+		
+		ArrayList<Notice> list = null;
+		
+		System.out.println("condition == service == " + condition);
+		
+		// 제목으로 검색
+		if(condition.equals("title")) {
+			list = new NoticeDao().searchTitle(conn, search);
+		
+		// 내용으로 검색
+		} else if(condition.equals("content")){
+			list = new NoticeDao().searchContent(conn, search);
+		}
+		
+		close(conn); // 커넥션 닫기
+		
+		return list; // list 반환
+	}
 
 }

@@ -44,7 +44,7 @@
 	<!-- menu -->
 	<jsp:include page = "../common/menu.jsp"/>
 	
-	<div class="outer">
+	<div class="outer"><br><br>
 
 		<table id="detailArea" border="1">
 			<tr>
