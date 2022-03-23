@@ -10,6 +10,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+<style>
+	#insertBtn {
+		margin:auto;
+		margin-bottom:20px
+	}
+</style>
+
 </head>
 <body>
 

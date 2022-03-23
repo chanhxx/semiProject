@@ -110,7 +110,6 @@
     
 	<br>
 	
-	
 	<script>
 		<%-- list 가 비어있지 않으면 --%>
 		<c:if test="${!empty list}">
