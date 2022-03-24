@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-    
+
 <%-- jstl import --%> 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>게시글 목록</title>
+<title>Insert title here</title>
 
 <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
 <!--     Fonts and icons     -->
@@ -48,8 +48,9 @@
 </style>
 
 </head>
-<body>
 
+<body>
+	
 	<!-- menu -->
 	<jsp:include page = "../common/menu.jsp"/>
 	
@@ -58,7 +59,7 @@
          <div class="col-md-12">
            <div class="card">
              <div class="card-header">
-               <h4 class="card-title">Q&A</h4>
+               <h4 class="card-title">작성한 게시글</h4>
              </div>
              <div class="card-body">
                <div class="table-responsive">
@@ -117,7 +118,7 @@
 	<!-- 페이징바 만들기 -->
 	<div class="pagingArea" align="center">
 		<!-- 맨 처음으로 (<<) -->
-		<button onclick="location.href='<%=request.getContextPath()%>/boardList.do?currentPage=1'"> &lt;&lt; </button>
+		<button onclick="location.href='<%=request.getContextPath()%>/boardSelectList.do?currentPage=1'"> &lt;&lt; </button>
 	
 		<!-- 이전페이지로(<) -->
 		<c:choose>
@@ -129,7 +130,7 @@
 			<%-- 그 외에는 --%>
 			<c:otherwise>
 				<%-- 현재 페이지에서 하나 뺀 페이지로 이동하도록 --%>
-				<button onclick="location.href='<%= request.getContextPath() %>/boardList.do?currentPage=${pi.currentPage - 1}'"> &lt; </button>
+				<button onclick="location.href='<%= request.getContextPath()%>/boardSelectList.do?currentPage=${pi.currentPage - 1}'"> &lt; </button>
 			</c:otherwise>
 		</c:choose>
 		 
@@ -143,7 +144,7 @@
 				</c:when>
 				<%-- 그 외에는 클릭하면 해당 페이지로 넘어가도록 --%>
 				<c:otherwise>
-					<button onclick="location.href='<%=request.getContextPath() %>/boardList.do?currentPage=${p}'"> ${p} </button>
+					<button onclick="location.href='<%=request.getContextPath() %>/boardSelectList.do?currentPage=${p}'"> ${p} </button>
 				</c:otherwise>
 			</c:choose>
 		</c:forEach>
@@ -158,14 +159,14 @@
 			<%-- 그 외에는 --%>
 			<c:otherwise>
 				<%-- 현재 페이지에서 하나 더한 페이지로 이동하도록 --%>
-				<button onclick="location.href='<%= request.getContextPath() %>/boardList.do?currentPage=${pi.currentPage + 1}'"> &gt; </button>
+				<button onclick="location.href='<%= request.getContextPath() %>/boardSelectList.do?currentPage=${pi.currentPage + 1}'"> &gt; </button>
 			</c:otherwise>
 		</c:choose>
 	
 		<!-- 맨 끝으로 (>>) -->
-		<button onclick="location.href='<%=request.getContextPath()%>/boardList.do?currentPage=${pi.maxPage}'"> &gt;&gt; </button>
-	</div> 
-	
+		<button onclick="location.href='<%=request.getContextPath()%>/boardSelectList.do?currentPage=${pi.maxPage}'"> &gt;&gt; </button>
+		 
+	</div>
 	
 	
    	<form class="searchArea" align="center">
@@ -176,12 +177,6 @@
         <input type="search" id="search" name="search">
         <button type="submit">검색하기</button>
   	</form>
-	
-	
-    <div id="insertBtn" align="center">
-		<%-- 클릭 시 작성하기 폼으로 화면 전환하는 서블릿 연결 --%>
-        <button onclick="location.href='<%=request.getContextPath()%>/boardEnrollForm.do'">작성하기</button>
-    </div>
 	
 	<br>
 	
@@ -240,21 +235,8 @@
 	   			$(".table>tbody>tr").click(function() {
 	   				// 게시글 번호 가져와서 변수에 담기
 	   				let bno = $(this).children().eq(0).text();
-	   				
-	   				// 관리자라면 비밀번호 입력 없이 바로 상세 조회 가능
-	   				if(${!empty sessionScope.loginUser && sessionScope.loginUser.userId == 'admin'}) {
-	   					
-	   					location.href= "<%=request.getContextPath()%>/boardDetail.do?bno="+bno;
-	   				
-	   				} else {
-	   					// 
-		   				let url = "<%=request.getContextPath()%>/boardDetailPwdCheck.do?bno="+bno;
-		   				let name = "boardPwdCheckPopup";
-	   					let option = "width = 500, height = 300, position = absolute , top = 50%, left = 50%"
-						
-		   				open(url, name, option);
-	   				}
-					
+
+   					location.href= "<%=request.getContextPath()%>/boardDetail.do?bno="+bno;
 	   			})
 	   		})
    		</c:if>
@@ -273,6 +255,6 @@
 	
 	<!-- footer-->
    	<jsp:include page = "../common/footer.jsp"/>
-
+	
 </body>
 </html>

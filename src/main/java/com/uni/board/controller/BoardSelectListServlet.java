@@ -1,4 +1,4 @@
-package com.uni.notice.controller;
+package com.uni.board.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,21 +9,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.uni.board.model.service.BoardService;
+import com.uni.board.model.vo.Board;
 import com.uni.common.model.vo.PageInfo;
-import com.uni.notice.model.service.NoticeService;
-import com.uni.notice.model.vo.Notice;
+import com.uni.member.model.vo.Member;
 
 /**
- * Servlet implementation class BoardSearchServlet
+ * Servlet implementation class BoardSelectList
  */
-@WebServlet("/noticeSearch.do")
-public class NoticeSearchServlet extends HttpServlet {
+@WebServlet("/boardSelectList.do")
+public class BoardSelectListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public NoticeSearchServlet() {
+    public BoardSelectListServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,6 +33,7 @@ public class NoticeSearchServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		
 		// 전체 리스트 뿐만 아니라 페이지도 고려해서 가져와야 함
 
@@ -46,7 +48,7 @@ public class NoticeSearchServlet extends HttpServlet {
 		int boardLimit; // 한 페이지에 보여질 게시글의 최대 개수
 		
 		// 총 개시글 개수 가져와서 담기
-		listCount = new NoticeService().getListCount();
+		listCount = new BoardService().getListCount();
 		
 		// 현재 페이지
 		currentPage = 1;
@@ -86,27 +88,19 @@ public class NoticeSearchServlet extends HttpServlet {
 		// ============================
 		
 		
-		// condition, search 가져오기
-		String condition = request.getParameter("condition");
-		String search = request.getParameter("search");
+		// 로그인 유저 아이디
+		String userId = (String)((Member)request.getSession().getAttribute("loginUser")).getUserId();
 		
-		System.out.println("condition == servlet == " + condition);
-		
-		/*if(condition == null) {
-			
-		}*/
-		
-		// 페이징처리 위한 PageInfo와 둘 다 넘겨 받은 결과 list에 담기
-		ArrayList<Notice> list = new NoticeService().searchList(pi, condition, search);
+		// 해당 회원의 모든 게시글을 가져오기 위해 list
+		ArrayList<Board> list = new BoardService().boardSelectList(pi, userId);
 		
 		// jsp로 보내기
 		request.setAttribute("list", list);
 		request.setAttribute("pi", pi);
-		// 검색 옵션과 검색어도 같이 넘겨서 검색 리스트 화면에서 유지할 수 있도록
-		request.setAttribute("condition", condition);
-		request.setAttribute("search", search);
-		// 페이지 이동
-		request.getRequestDispatcher("views/notice/noticeSearchListView.jsp").forward(request, response);
+		
+		// 화면 전환 > 게시판 목록으로
+		request.getRequestDispatcher("views/board/boardSelectListView.jsp").forward(request, response);
+		
 	}
 
 	/**

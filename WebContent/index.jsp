@@ -8,7 +8,8 @@
  <meta name="description" content="" />
  <meta name="author" content="" />
 </head>
-<body>
+<body style=background:#f8f8f8>
+
 	<!-- popup -->
 	<jsp:include page = "views/common/popup.jsp"/>
 	
@@ -32,6 +33,8 @@
            </div>
        </div>
    </section>
+   
+   
    <script>
    		$(function(){
    			
@@ -67,8 +70,88 @@
    		   		}
    	   		})
    		})
-   		
    </script>
+   
+   
+	<div class="container px-4 px-lg-6 mt-10" id="reviewdiv">
+		<div class="owl-carousel owl-theme owl-loaded">
+			<div class="owl-stage-outer text-center" >
+		 		<h3>실제 구매한 고객님이 남긴</h3>
+				<h4>REVIEW</h4>
+			  	<div class="owl-stage"  id="reviewList">
+				    <!-- 후기리스트 구역 -->  
+			  	</div>
+		  	</div>
+		</div>
+	</div>
+	
+	
+	<script>
+	
+		$(function(){
+			
+			$.ajax({
+   		   		url: "topReview.do",
+   		   		
+   		   		type: "get",
+   		   		
+   		   		success:function(list){
+   		   			
+   		   			let value = "";
+   		   			
+   		   			for(var i in list){
+   		   				
+   		   			value += '<div class="owl-item card-body p-4" id="title">'+
+					    		'<a id="a" href="<%=request.getContextPath() %>/detailProduct.do?no='+list[i].pId+'"><img class="card-img-top" src="<%=request.getContextPath() %>/resources/image/'+list[i].piName+'" alt="상품이미지" style="width: 200px; height:auto;"/>'+
+								'<br>'+
+					    		'<h6 class="fw-bolder" style="color:black">'+list[i].rName+'</h6>'+
+					    		'<br>'+
+								'<div id="d" class="card-footer p-4 pt-0 border-top-0 id="content" style="background-color:#f8f8f8 ">'+list[i].rContent+'</div>'+
+					   		'</div>';  				
+
+					}
+   		   			
+					$("#reviewList").html(value);
+   		   		},
+   		   		
+   		   		error:function(){
+   		   			console.log("ajax통신실패");
+   		   		},
+   		   		
+	   		   	complete : function() {
+	   		   		
+		   		   	$(document).ready(function(){ // OWL Carousel API
+		   		   		
+		   			    let owl = $('.owl-carousel');
+		   			    
+		   			    owl.owlCarousel({
+		   			        items:5,                 // 한번에 보여줄 아이템 수
+		   			        loop:true,               // 반복여부
+		   			        margin:15,               // 오른쪽 간격
+		   			        autoplay:true,           // 자동재생 여부
+		   			        autoplayTimeout:1800,    // 재생간격
+		   			        autoplayHoverPause:true  // 마우스오버시 멈출지 여부
+		   			    });    
+		   			    
+		   			    $('.customNextBtn').click(function() {
+		   			        owl.trigger('next.owl.carousel');
+		   			    })
+		   			    
+		   			    $('.customPrevBtn').click(function() {
+		   			        owl.trigger('prev.owl.carousel', [300]);
+		   			    })
+		   			}); 
+	   		    }
+
+   	   		})
+		
+		})
+		
+   </script>
+   
+   <br><br><br><br>
+   
+   
    <!-- Footer-->
    <jsp:include page = "views/common/footer.jsp"/>
 

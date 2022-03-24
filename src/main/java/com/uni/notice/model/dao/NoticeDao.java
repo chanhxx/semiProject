@@ -347,7 +347,7 @@ public class NoticeDao {
 	
 	
 	// 제목으로 검색
-	public ArrayList<Notice> searchTitle(Connection conn, String search) {
+	public ArrayList<Notice> searchTitle(Connection conn, PageInfo pi, String search) {
 		
 		// list 선언
 		ArrayList<Notice> list = new ArrayList<Notice>();
@@ -359,10 +359,16 @@ public class NoticeDao {
 		String sql = prop.getProperty("searchTitle");
 		String title = '%'+search+'%';
 		
+		// 페이징 시작, 끝 페이지 로 해야 전체 조회 가능
+		int startRow = (pi.getCurrentPage()-1) * pi.getBoardLimit() + 1;
+		int endRow = startRow + pi.getBoardLimit() - 1;
+		
 		try {
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, title);
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, endRow);
 			
 			rset = pstmt.executeQuery();
 			
@@ -393,7 +399,7 @@ public class NoticeDao {
 
 	
 	// 내용 검색
-	public ArrayList<Notice> searchContent(Connection conn, String search) {
+	public ArrayList<Notice> searchContent(Connection conn, PageInfo pi, String search) {
 		
 		// list 선언
 		ArrayList<Notice> list = new ArrayList<Notice>();
@@ -405,10 +411,16 @@ public class NoticeDao {
 		String sql = prop.getProperty("searchContent");
 		String content = '%'+search+'%';
 		
+		// 페이징 시작, 끝 페이지 로 해야 전체 조회 가능
+		int startRow = (pi.getCurrentPage()-1) * pi.getBoardLimit() + 1;
+		int endRow = startRow + pi.getBoardLimit() - 1;
+		
 		try {
 			pstmt = conn.prepareStatement(sql);
 			
 			pstmt.setString(1, content);
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, endRow);
 			
 			rset = pstmt.executeQuery();
 			

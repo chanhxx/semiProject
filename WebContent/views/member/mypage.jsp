@@ -44,47 +44,55 @@ h5 {
 
 </style>
 
+</head>
+
 <jsp:include page = "../common/menu.jsp"/>
 
-	<strong><h4 style="display:inline">
-			MyPage
-			</h4></strong>
-			<input type="hidden" id = "originPwd" name = "originPwd" value = "<%=userPwd%>">
+	<strong><h4 style="display:inline">MyPage</h4></strong>
+	
+	<input type="hidden" id = "originPwd" name = "originPwd" value = "<%=userPwd%>">
 			
 	<div id="mil">
-
 		<strong><h5 style="margin-left: 250px">Milege</h5></strong> 
 		<strong><h5	style="margin-left: 470px"><%=mileage%>원</h5></strong> 
 		<strong><h5 style="margin-left: 100px">Coupon</h5></strong>
 		<input type ="button" style="margin-left: 300px" value="조회" onClick="location.href='<%=request.getContextPath() %>/coupon.do'"></input>		
 	</div>
-        <hr width="1200px" style="border: solid 2px black;" align="right">
-        <form id="updateForm" >
-	<div id="Members">
-		<input id="membut" type="button" value="주문 목록"></input> 
-		<input id="membut" type="button" value="회원 정보변경" style="margin-left: 200px;" onClick="location.href='<%=request.getContextPath() %>/memberupdate.do'"></input>		
-		<input id="memdel" type="button" value="회원 탈퇴" style="margin-left: 200px;" onclick="deleteMember()"  ></input>			
-		</form>
-	</div>
+    
+    <hr width="1200px" style="border: solid 2px black;" align="right">
+    
+	<form id="updateForm" >
+		<div id="Members">
+			<input id="membut" type="button" value="주문 목록"></input>
+			<input id="membut" type="button" value="회원정보 변경" style="margin-left: 200px;" onClick="location.href='<%=request.getContextPath() %>/memberupdate.do'"></input>		
+			<input id="memdel" type="button" value="회원 탈퇴" style="margin-left: 200px;" onclick="deleteMember()"></input>
+			<input id="membut" type="button" value="작성한 게시글" style="margin-left: 200px;" onClick="location.href='<%=request.getContextPath()%>/boardSelectList.do'"></input>			
+		</div>
+	</form>
+	
+	
+	
+	
 	<script>
 	
-	     function deleteMember(){
-	    	  var  pwd = prompt("현재 비밀번호를 입력해주세요")
-	    	  var op = $("#originPwd").val();
+		function deleteMember(){
+			var  pwd = prompt("현재 비밀번호를 입력해주세요")
+	    	var op = $("#originPwd").val();
 	    	  
-	    	  if(op === pwd){
+	    	if(op === pwd){
 	    	  	    	  
-	    	  var val = confirm("정말로 탈퇴 하시겠습니까 ");
+	    		var val = confirm("정말로 탈퇴 하시겠습니까 ");
 	    	      	  
-	    	  if(val){
-	    		  $("#updateForm").attr("action","<%=request.getContextPath()%>/deleteMember.do");
-	    		  $("#updateForm").submit();
-	    	  }else{
-	    		  alert("취소하였습니다.");
-	    	  }
-	      }
-	      }
-	     </script>
+				if(val) {
+	    	  		$("#updateForm").attr("action","<%=request.getContextPath()%>/deleteMember.do");
+	    		  	$("#updateForm").submit();
+	    	  	}else {
+	    		  	alert("취소하였습니다.");
+	    	  	}
+			}
+   	  	}
+		
+     </script>
 
 </body>
 </html>
