@@ -37,7 +37,7 @@
 	
 	.replyArea{
 		width:800px;
-		color:white;
+		color:black;
 		margin:auto;
 		margin-bottom:50px;
 	}
@@ -117,11 +117,28 @@
 			
 			let bno = ${b.boardNo};
 			
-			let url = "<%=request.getContextPath()%>/boardDeletePwdCheck.do?bno="+bno;
-			let name = "boardPwdCheckPopup";
-			let option = "width = 500, height = 300, top = 50%, left = 50%, location = no"
-		
-			open(url, name, option);
+			// 관리자라면
+			if(${!empty sessionScope.loginUser && sessionScope.loginUser.userId == 'admin'}) {
+				
+				// confirm 결과 변수에 담아서
+				let result = confirm("게시글을 삭제하시겠습니까?");
+				// 확인 클릭 시 삭제 진행
+				if(result) {
+					alert("삭제가 완료되었습니다.");
+					location.href="<%=request.getContextPath()%>/boardDelete.do?bno="+bno;
+				} else {
+					return false;
+				}
+			// 회원 및 비회원인 경우 비밀번호 확인 후 삭제되도록
+			} else {
+				
+				let url = "<%=request.getContextPath()%>/boardDeletePwdCheck.do?bno="+bno;
+				let name = "boardPwdCheckPopup";
+				let option = "width = 500, height = 300, top = 50%, left = 50%, location = no"
+			
+				open(url, name, option);
+			}
+			
 		}
 		
 	</script>
@@ -196,14 +213,14 @@
 					},
 					
 					success: function(status){
-						if(status =="success"){ // 성공적으로 입력되면 (넘겨 받은 문자가 success 이면)
-							selectReplyList(); // 리스트 조회해서 실시간으로 바뀌도록
-							$("#replyContent").val(""); // 입력했으니 댓글 입력창 비워주기
-						}
+								if(status == "success") { // 성공적으로 입력되면 (넘겨 받은 문자가 success 이면)
+									selectReplyList(); // 리스트 조회해서 실시간으로 바뀌도록
+									$("#replyContent").val(""); // 입력했으니 댓글 입력창 비워주기
+								}
 					},
 					
 					error: function(){
-						console.log("ajax 통신 실패 - 댓글등록");
+						console.log("ajax 통신 실패 - 댓글 등록");
 					}
 				})
 				
@@ -230,24 +247,62 @@
 					
 					var value="";
 					
+					<%-- a 태그에서의 함수 호출 : 함수에 리턴값이 있던 없던 클릭해도 페이지의 최상위로 이동하지 않음 --%>
 					for(var i in list){
 						
 						value += '<tr>'+
-									'<td width="330px">'+ list[i].replyContent+'</td>'+ 
-									'<td width="150px">'+ list[i].createDate+'</td>'+ 
-								'</tr>';
+									'<td width="330px">'+ list[i].replyContent +'</td>' +
+									'<td width="150px">'+ list[i].createDate +'</td>' +
+									<%-- 댓글 삭제 관리자만 할 수 있도록 조건 설정 --%>
+									<c:if test="${ !empty sessionScope.loginUser && sessionScope.loginUser.userId == 'admin'}">
+										'<td><a href="javascript:void(0);" onClick="deleteConfirm(' + list[i].replyNo + ');">삭제</a></td>' +
+									</c:if>
+								 '</tr>';
 					}
 					
 					$("#replyList").html(value);
 				},
 				
 				error: function(){
-					console.log("ajax 통신실패 - 댓글조회");
+					console.log("ajax 통신실패 - 댓글 조회");
 				}
 				
 			})
 		}
 		
+		
+		// 댓글 삭제 a태그 클릭 시
+		function deleteConfirm(rno) {
+			// confirm 결과 변수에 담아서
+			let result = confirm("댓글을 삭제하시겠습니까?");
+			
+			// 확인 클릭 시 정상적으로 삭제
+			if(result) {
+				
+				$.ajax({
+					
+					url: "replyDelete.do",
+					
+					type: "post",
+					
+					data: {rno : rno},
+					
+					success: function(status) {
+								if(status == "success") { // 성공적으로 입력되면 (넘겨 받은 문자가 success 이면)
+									selectReplyList(); // 리스트 조회해서 실시간으로 바뀌도록
+								}
+					},
+					
+					error: function(){
+						console.log("ajax 통신 실패 - 댓글 삭제");
+					}
+
+				})
+			// 취소 클릭 시 삭제 안 되고 그대로
+			} else {
+				return false;
+			}
+		}
 		
 
 	</script>

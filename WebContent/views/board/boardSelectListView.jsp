@@ -81,7 +81,7 @@
 						<%-- list가 비어있으면 --%>
 	                    <c:if test="${ empty list }">
 	                         <tr>
-	                           <td colspan="5">존재하는 게시글이 없습니다.</td>
+	                           <td colspan="5">작성한 게시글이 없습니다.</td>
 	                        </tr>
 	                    </c:if>
 	                    
