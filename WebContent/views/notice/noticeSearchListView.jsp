@@ -216,7 +216,7 @@
 	   				
 	   				// 해당 공지사항 상세 페이지로 넘어가기
 	   				// 쿼리스트링으로 작성
-	   				location.href= "<%=request.getContextPath()%>/noticeDetail.do?nno="+nno;
+	   				location.href= "<%=request.getContextPath()%>/noticeSearchDetail.do?nno="+nno+"&condition=${condition}&search=${search}";
 	   			})
 	   		})
    		</c:if>

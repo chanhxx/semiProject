@@ -93,7 +93,7 @@
 		<br>
 		
 		<div class="btns" align="center">
-			<button type="button" onclick="location.href='<%=request.getContextPath()%>/boardSelectList.do?currentPage=1;">목록으로</button>
+			<button type="button" onclick="location.href='<%=request.getContextPath()%>/boardSelectList.do?currentPage=1';">목록으로</button>
 			<%-- 작성자가 본인이거나 관리자인 경우 수정, 삭제 버튼 활성화 --%>
 			<c:if test="${ !empty sessionScope.loginUser && sessionScope.loginUser.getUserId() == b.boardWriter
 							|| !empty sessionScope.loginUser && sessionScope.loginUser.userId == 'admin'}">
@@ -174,7 +174,7 @@
 	</div>
 
 	<script>
-	
+		/*
 		// 댓글 입력
 		$(function() {
 			
@@ -208,7 +208,7 @@
 				})
 				
 			})
-		})
+		})*/
 		
 		// 댓글 리스트 조회
 		function selectReplyList() {
