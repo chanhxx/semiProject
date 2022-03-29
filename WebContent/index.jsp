@@ -15,28 +15,22 @@
 	
 	<!-- menu -->
    	<jsp:include page = "views/common/menu.jsp"/>
+   	
+   	<!-- header -->
+   	<jsp:include page = "views/common/header.jsp"/>
 	
-	<!-- Header-->
-	<header class="bg-dark py-5">
-		<div class="container px-4 px-lg-5 my-5">
-			<div class="text-center text-white">
-				<h1 class="display-4 fw-bolder">칼로리를 부탁해</h1>
-				<p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
-			</div>
-		</div>
-	</header>
-   
-   <section class="py-5">
+    
+	<section class="py-5">
        <div class="container px-4 px-lg-5 mt-5">
            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" id="list">
            		<!-- 대표상품 삽입 장소 -->
            </div>
        </div>
-   </section>
+   	</section>
    
    
-   <script>
-   		$(function(){
+   	<script>
+		$(function(){
    			
    			$.ajax({
    		   		url: "topProduct.do",
@@ -69,8 +63,8 @@
    		   			console.log("ajax통신실패");
    		   		}
    	   		})
-   		})
-   </script>
+		})
+	</script>
    
    
 	<div class="container px-4 px-lg-6 mt-10" id="reviewdiv">
@@ -143,17 +137,17 @@
 		   			}); 
 	   		    }
 
-   	   		})
+			})
 		
 		})
 		
-   </script>
+	</script>
    
-   <br><br><br><br>
+	<br><br><br><br>
    
    
-   <!-- Footer-->
-   <jsp:include page = "views/common/footer.jsp"/>
+	<!-- Footer-->
+	<jsp:include page = "views/common/footer.jsp"/>
 
    
  </body>

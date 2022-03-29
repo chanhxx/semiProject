@@ -19,22 +19,90 @@
 		margin-top:50px;
 	}
 	
-	#detailArea{
+	.detailArea{
 		width:60%;
 		margin:auto;
-		border-color:white;
+		margin-top: 40px;
+		margin-bottom: 20px;
 		border:1px solid black;
+		border-left: none;
+		border-right: none;
 	}
 	
-	#detailArea tr, #detailArea tr>td{
+	.detailArea tr {
 		border:1px solid black;
+		border-left: none;
+		border-right: none;
 	}
 	
-	#detailArea p{height:150px;}
+	.detailArea p {height:150px;}
 	
 	.btns{margin:atuo; margin-bottom:50px}
 	
-	.btns a{text-decoration:none; color:black;}
+	.button {
+		color: #fff;
+  		border-radius: 5px;
+  		padding: 5px 15px;
+  		font-family: 'Lato', sans-serif;
+  		font-weight: 500;
+  		background: transparent;
+  		cursor: pointer;
+  		transition: all 0.3s ease;
+  		position: relative;
+  		display: inline-block;
+   		box-shadow:	inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   					7px 7px 20px 0px rgba(0,0,0,.1),
+   					4px 4px 5px 0px rgba(0,0,0,.1);
+  		outline: none;
+  		
+		background: black;
+	  	border: none;
+	  	z-index: 1;
+	}
+	
+	.button:after {
+		position: absolute;
+  		content: "";
+  		width: 0;
+  		height: 100%;
+	  	top: 0;
+	  	right: 0;
+	  	z-index: -1;
+	  	background-color: grey;
+	  	border-radius: 5px;
+   		box-shadow: inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   					7px 7px 20px 0px rgba(0,0,0,.1),
+   					4px 4px 5px 0px rgba(0,0,0,.1);
+  		transition: all 0.3s ease;
+	}
+	
+	.button:hover {
+		color: #fff;
+	}
+	
+	.button:hover:after {
+	  	left: 0;
+	  	width: 100%;
+	}
+	
+	.button:active {
+	  	top: 2px;
+	}
+	
+	.title {
+		height: 50px;
+	}
+	
+	.detailArea th {
+		background-color: lightgrey;
+		text-align: center;
+	}
+	
+	.detailArea td {
+		padding: 5px 5px 5px 10px;
+		padding-left: 10px;
+	}
+	
 	
 </style>
 
@@ -44,20 +112,27 @@
 	<!-- menu -->
 	<jsp:include page = "../common/menu.jsp"/>
 	
-	<div class="outer"><br><br>
+	<!-- header -->
+   	<jsp:include page = "../common/header.jsp"/>
+	
+	
+	<div class="outer">
+	
+		<h2 align="center"> 공지사항 </h2>
 
-		<table id="detailArea" border="1">
+		<table class="detailArea" border="1">
 			<tr>
-				<td>제목</td>
-				<td colspan="3">${notice.noticeTitle}</td>
+				<th><h4>제목</h4></th>
+				<td colspan="3"><h4>${notice.noticeTitle}</h4></td>
 			</tr>
 			<tr>
-				<td>작성자</td>
+				<th>작성자</th>
 				<td>관리자</td>
-				<td>작성일</td>
+				<th>작성일</th>
 				<td>${notice.createDate}</td>
 			</tr>
 			<tr>
+				<th>내용</th>
 				<td colspan="4">
 					<p>${notice.noticeContent}</p>
 				</td>
@@ -68,13 +143,13 @@
 		
 		<div class="btns" align="center">
 
-			<button type="button" onclick="location.href='<%=request.getContextPath()%>/noticeSearch.do?condition=${condition}&search=${search}';">목록으로</button>
+			<button class="button" type="button" onclick="location.href='<%=request.getContextPath()%>/noticeSearch.do?condition=${condition}&search=${search}';">목록으로</button>
 			
 			<%-- 로그인이 되어있고 해당 아이디가 관리자라면 --%>
 			<c:if test="${ !empty sessionScope.loginUser && sessionScope.loginUser.userId == 'admin'}">
 				<%-- 바로 url 연결해줘서 서블릿으로 연결 / 쿼리스트링으로 --%>
-				<button type="button" onclick="location.href='<%=request.getContextPath()%>/noticeUpdateForm.do?nno=${notice.noticeNo}';">수정하기</button>
-				<button type="button" id="delete" onclick="deleteNotice()">삭제하기</button>
+				<button class="button" type="button" onclick="location.href='<%=request.getContextPath()%>/noticeUpdateForm.do?nno=${notice.noticeNo}';">수정하기</button>
+				<button class="button" type="button" id="delete" onclick="deleteNotice()">삭제하기</button>
 			</c:if>
 		</div>
 	</div>
