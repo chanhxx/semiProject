@@ -1,8 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="java.sql.Date.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%
+	
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +15,9 @@
 <meta name="description" content="" />
 <meta name="author" content="" />
 <link href="././resources/css/styles2.css" rel="stylesheet"/>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/ko.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.10.7/dayjs.min.js"></script>
 <style>
 	.date {
   	text-align: right;
@@ -27,7 +32,7 @@
 	}
 </style>
 </head>
-<body>
+<body style=background:#f8f8f8>
  	<jsp:include page = "../common/menu.jsp"/>
     <!-- Product section-->
     <section class="py-5">
@@ -37,10 +42,10 @@
                 <div class="col-md-6">
                 
                  <input type="hidden" id="io" value="${io.pnum}">
-     			 <form id="orderStart" action="views/test/orderForm.jsp" method="post">
+     			 <form id="orderStart" action="<%=request.getContextPath()%>/productDetailPayment.do" method="post">
                 
                     <input type="hidden" name="pId" value="${p.pId}">
-                
+                	
                     <div class="small mb-1">
                     	<c:if test= "${fn:contains(p.pName, '프로틴')}">
                     	<h4>프로틴파우더</h4>
@@ -120,7 +125,7 @@
                         <br>
                         <label id = "userCheck"></label>
                     </div>
-                    
+                    <input type="hidden" name="pId" value="">
                  </form>
                  
                 </div>
@@ -157,7 +162,7 @@
 				},
 				
 				success:function(object){
-					
+					console.log(object)
 					// 상품이 변할때마다 가격, 재고량, 주문량 변경
 					$('#price').text(object.price);
 					$('#changePrice').val(object.price);
@@ -209,6 +214,43 @@
 
     </script>
     
+     <script>
+    $('#cart').click(function(){
+    	
+    	let pId = $('[name="pId"]').val();
+    	let pPrice = $('#changePrice').val();
+    	let amount = $('#numBox').val();
+    	
+    	//console.log(pId)
+    	//console.log(pPrice)
+    	//console.log(amount)
+    	
+    	$.ajax({
+    		
+    		url:"productInCart.do",
+    		
+    		data : {
+    			
+    			pId:pId,
+    			pPrice:pPrice,
+    			amount:amount
+    			
+    		},
+    		success:function(){
+    			
+    			let result = confirm("장바구니에 성공적으로 담았습니다! 장바구니로 이동하시겟습니까?");
+    			if(result){
+    				location.href="<%=request.getContextPath()%>/cartList.do";
+    			}
+ 
+    		}
+    		
+    	})<%-- ajax 끝--%>
+    	
+    })
+    
+    </script>
+    
     <section class="py-5 bg-light">
         <div class="container px-4 px-lg-4 mt-4">
 			<table class="table table-striped">
@@ -255,6 +297,7 @@
 			
         </div>
     </section>
+    
     <script>
     	
     	let pId = ${p.pId};
@@ -288,13 +331,16 @@
 					// 후기 있을때		
    		   			for(var i in list){
    		   				
-   		   				$("#list").html("");
-   		   				// 날짜 포맷 moment 라이브러리
+   		   				let month = list[i].rUpdate.substring(0,2);
+   		   				let day = list[i].rUpdate.substring(3,5);
+   		   				let year = list[i].rUpdate.slice(-4,11);
+   		   				let update = year+"년 "+month+" "+day+"일";
+   		   				
 						value += '<table class="table table-striped">'+
 						 			'<thead>'+
 									 	'<tr>'+
 									 		'<th>'+list[i].rName+'</th>'+
-									 		'<th class="date">'+moment(list[i].update).format("YYYY년MM월DD일")+'</th>'+
+									 		'<th class="date">'+update+'</th>'+
 									 	'</tr>'+
 									 '</thead>'+
 									 '<tbody>'+
@@ -319,8 +365,7 @@
 			})
 
     	})
-    
-    
+
     </script> 
      
     <jsp:include page = "../common/footer.jsp"/>

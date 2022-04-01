@@ -69,18 +69,17 @@ public class BoardInsertServlet extends HttpServlet {
 			// 회원인 경우 회원의 아이디 담기
 			if(loginUser != null) {
 				userId = loginUser.getUserId();
-			}/* else {
-				userId = "비회원";
-			}*/
+			}
 			
 			// 게시글 객체 생성
 			Board b = new Board();
 			
-			// set으로 설정
+			// set으로
 			b.setCategory(category);
 			b.setBoardContent(content.replaceAll("\n", "<br>"));
 			b.setBoardPwd(pwd);
 			b.setBoardWriter(userId);
+			
 			
 			// 첨부파일 객체 생성
 			Attachment at = null;
@@ -103,6 +102,7 @@ public class BoardInsertServlet extends HttpServlet {
 				at.setChangeName(changeName);
 			}
 			
+			System.out.println("at === servlet === " + at);
 			
 			// 게시글과 첨부파일 넘겨서 리턴 받은 결과 result 에 담기
 			int result = new BoardService().insertBoard(b, at);

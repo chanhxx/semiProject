@@ -4,13 +4,15 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="com.uni.cart.model.vo.Cart" %>
+<%@ page import="java.util.ArrayList" %>
 <%
-	Cart c = (Cart)request.getAttribute("c");
+	//ArrayList<Cart> list = //(ArrayList<Cart>)request.getAttribute("list");
 	Cart cd = new Cart();
 %>
 
 <!DOCTYPE html>
 <html>
+
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -18,6 +20,7 @@
 <meta name="author" content="" />
 <link href="././resources/css/styles2.css" rel="stylesheet" />
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <style>
 	
 .date {
@@ -141,17 +144,17 @@
 	}
 
     .cart-deal-item td:nth-child(2) {
-    width: 350px;
+    width: 300px;
     overflow: hidden;
 	}
 	
 	.cart-deal-item td:nth-child(3) {
-    width: 60px;
+    width: 50px;
     overflow: hidden;
 	}
 	
 	.cart-deal-item td:nth-child(4) {
-    width: 60px;
+    width: 50px;
 	}
 	
 	.cart-deal-item .unit-total-price {
@@ -372,140 +375,220 @@
 </head>
 <body>
 <jsp:include page = "../common/menu.jsp"/>
-
+<br><br><br><br><br>
 <section id="contents-cart" class="contents-cart async-content" style="visibility: visible;">    <!-- 전체 섹션 -->    
         <section class="cart-title">
         <i class="bi-cart-fill me-1"></i>   장바구니
         </section>
       
     <div id="cartContent">
-    
-        <table class="cartTable">
-            <caption class="none"></caption> <!-- 여백 생성  -->
-            <colgroup><col width="50"><col width="100"><col width="30"><col width="30"></colgroup><!-- 상품정보 자리 잡아주기 -->
-        <thead>
-            <tr class="head">
-                
-                <th scope="colgroup" id="th-product-box" colspan="2">상품정보</th>
-                <th scope="col" id="th-unit-total-price">상품금액</th>
-                <th scope="col" id="th-delivery-fee">배송비</th>
-                
-            </tr>
-        </thead>
-            
-    	<tbody id="cartTable-sku">
-    
-            <tr class="cart-deal-item">
-                
-                   
-	                <td class="cart-deal-item__image" id="pImg">
-                        
-                             <a href="<%=request.getContextPath() %>/detailProduct.do?no=${c.getPId()}"><img class="card-img-top" src="<%=request.getContextPath() %>/resources/image/${c.getPiName()}" width=78px height=78px alt="상품이미지" /></a>
-                        
-                    </td>
-                    <td class="product-box">
-                        
-                        <div class="product-name-part">
-                            
-                            <a href="<%=request.getContextPath() %>/detailProduct.do?no=<%=c.getPId() %>" class="product-name moveProduct modify-color" style=" text-decoration: none; color: inherit"><b><%=c.getPName() %></b></a>
-                            
-                                
-                            
-                        </div>
-                        
-                            <div id="80200404752" data-dawn-only="false" class="option-item modify-float" data-quantity="1" >
-                                <div class="option-item-info" data-restock-notification-state="false">
-                             
-                                            <div class="delivery-date rocket modify-padding">
-                                                <span class="arrive-date" style="display: inline-block; font-size:14px;"><strong>${c.getDDate()}</strong></span>
+    <div id="list" >
+    	<%--모든상품 삽입 --%>
+    </div>
+    <%-- 여기서부터 반복 --%>
+    <script>
+   	
+   		$(function(){
+   			
+   			$.ajax({
+   		   		url: "cartListData.do",
+   		   		
+   		   		type: "get",
+   		   		
+   		   		success:function(list){
+   		   			
+   		   			let value = "";
+   		   			console.log(list)
+   		   			for(var i  in list){
+			 
+   								value +=  
+   						 
+   									'<table class="cartTable">'+
+   						   		   
+   							     '<caption class="none"></caption>'+ <!-- 여백 생성  -->
+   							     '<colgroup><col width="50"><col width="100"><col width="30"><col width="30"></colgroup>'+ <!-- 상품정보 자리 잡아주기 -->
+   							     
+   							     '<thead>'+
+   							           '<tr class="head">'+
+   							               
+   							               '<th scope="colgroup" id="th-product-box" colspan="2" style="text-align:center">상품정보</th>'+
+   							               '<th scope="col" id="th-unit-total-price" style="text-align:center">상품금액</th>'+
+   							               '<th scope="col" id="th-delivery-fee" style="text-align:center">배송비</th>'+
+   							               
+   							           '</tr>'+
+   							     '</thead>'+
+   						           
+   						   		'<tbody id="cartTable-sku">'+
+   						   
+   						           '<tr class="cart-deal-item">'+
+   						               
+   						           		'<td class="cart-deal-item__image" id="pImg">'+
+   						                       
+   						                   '<a href="<%=request.getContextPath() %>/detailProduct.do?no='+list[i].pId+'"><img class="card-img-top" src="<%=request.getContextPath() %>/resources/image/'+list[i].piName+'" width=120px height=120px alt="상품이미지" /></a>'+
+   						                     
+   						                '</td>'+
+   						                   '<td class="product-box">'+
+   						                       
+   						                       '<div class="product-name-part">'+
+   						                           
+   						                           '<a href="<%=request.getContextPath() %>/detailProduct.do?no='+list[i].pId+'" class="product-name moveProduct modify-color" style=" text-decoration: none; color: inherit"><b>'+list[i].pName+'</b></a>'+
+   						                           
+   						                       '</div>'+
+   						                       
+   						                       '<div id="80200404752" data-dawn-only="false" class="option-item modify-float" data-quantity="1" >'+
+   						                       
+   						                           '<div class="option-item-info" data-restock-notification-state="false">'+
+   						                            
+   						                                '<div class="delivery-date rocket modify-padding">'+
+   						                                
+   						                                     '<span class="arrive-date" style="display: inline-block; font-size:14px;"><strong>'+list[i].dDate+'</strong></span> <br>'+
+   						                                  	 '<span class="arrive-date" style="display: inline-block; font-size:12px;"><strong>도착 예정</strong></span>'+
+   						                                  
+   						                                '</div>'+
 
-                                            </div>
+   						                           '</div>'+
+   						                           
+   						                                '<div class="option-price-part" >'+
+   						                               
+   						                               		'<span class="unit-cost" id="original'+i+'">'+list[i].poPrice+'</span> &nbsp'+
+   						                                   
+   																'<select class="quantity-select" id="amountChange" name="amountChange'+i+'" onchange="change(this.value, this.name)" >'+
+   																		
+   																		'<option>'+list[i].pAmount+'</option>'+
+   																		
+   																		'<option value="1">1</option>'+
+   																	
+   																		'<option value="2">2</option>'+
+   																	
+   																		'<option value="3">3</option>'+
+   																	
+   																		'<option value="4">4</option>'+
+   																	
+   																		'<option value="5">5</option>'+
+   																	
+   																		'<option value="6">6</option>'+
+   																	
+   																		'<option value="7">7</option>'+
+   																	
+   																		'<option value="8">8</option>'+
+   																	
+   																		'<option value="9">9</option>'+
+   																	
+   																		'<option value="10">10+</option>'+
+   																		
+   																'</select>'+
+   																
+   						                                   		'<a class="delete-option" onclick=deleteProduct('+list[i].pId+')></a>'+
+   						                                   
+   						                                '</div>'+
+   						                         
+   						                         '</div>'+
+   						                          
+   						                   '</td>'+
+   						                   
+   						                   '<td class="unit-total-price">'+
+   							                    
+   											   '<div class="unit-total-sale-price" name="twochangePrice'+i+'">'+list[i].pPrice+'</div>'+
+   									
+   										   '</td>'+
+   						                   
+   							               '<td class="delivery-fee" rowspan="1" headers="th-delivery-fee">'+
+   						                           
+   						                       '<span class="delivery-fee__free"  name="dPrice'+i+'">'+ dPrice(i) +'원</span>'+
+   						                           
+   						                   '</td>'+
+   						                      
+   						           '</tr>'+
+   							        
+   						       	   '<tr class="special-gift-area" style="display: none;"></tr>'+
+   						       	   
+   						       	   '<tr class="bundle-price-total">'+
+   						       	   
+   						           	  '<td colspan="5">'+
+   						               
+   						                 '<span class="rocket-total-price-area">상품가격'+
+   						                 
+   											 '<span class="total-product-price number"  name="ChangePrice'+i+'" >'+list[i].pPrice+'</span>원 <span class="coupon-area">'+
+   						                   
+   							                     '<span class="symbol symbol-plus"><span class="sr-only">더하기</span></span>'+
+   							                     
+   												 '배송비 <span id="rocket-delivery-charge" class="delivery-charge" name="dPrice'+i+'"><strong>'+ dPrice(i) +'원</strong></span>'+
+   												 
+   												 '<span class="symbol symbol-equal"><span class="sr-only">결과는</span></span>'+
+   												 
+   												 '주문금액 <span class="total-order-price number"  name="changetotal'+i+'">'+(list[i].pPrice + dPrice(i))+'</span>원'+
+   						                 
+   										     '</span>'+
+   						           		  '</span>'+
+   						           	   '</td>'+
+   						      	    '</tr>'+
+   						   
+   						   		'</tbody>'+
 
-                                </div>
-                                <div class="option-price-part" >
-                                
-                                <span class="unit-cost"><span class="sr-only">제품가격</span>${c.getPoPrice()}</span>
-                                    
-		<select class="quantity-select" id="amountChange" name="amountChange">
-				
-						<option value="<%= c.getPAmount()%>"><%= c.getPAmount()%></option>
-						<option value="1">1</option>
-					
-						<option value="2">2</option>
-					
-						<option value="3">3</option>
-					
-						<option value="4">4</option>
-					
-						<option value="5">5</option>
-					
-						<option value="6">6</option>
-					
-						<option value="7">7</option>
-					
-						<option value="8">8</option>
-					
-						<option value="9">9</option>
-					
-					<option value="10">10+</option>
-				
-			</select>
-			
-		<span class="unit-price-area"><span class="unit-price" id="changePrice"><%=c.getPPrice() %></span></span>
+   						     '</table>'+
+   							                  
+   						   	 '<form id="listInfo'+i+'" action="<%=request.getContextPath()%>/paymentMember.do" method="post">'+
+   						       	 '<input type="hidden" id="title'+i+'" name="title'+i+'" value="'+list[i].pId+'">'+	
+   						       	 '<input type="hidden" id="price'+i+'" value="'+list[i].poPrice+'">'+	
+   						       	 '<input type="hidden" id="total" name="total'+i+'" value="'+list[i].poPrice+'">'+	
+   						     	 '<input type="hidden" id="listLe" value="'+list.length+'">'+	
+   						     '</form>' <%-- 본문 끝--%>
+   								
+   							  function dPrice(i){
+   			   		   			let c = 0;
+   			   		   			if(i == 0){
+   			   		   					c = 2500;
+   			   		   				}else{
+   			   		   					c = 0;
+   			   		   				}
+   			   		   				
+   			   		   			return c	
+   			   		   			}
+   		   			} <%-- for문 끝--%>
+   		   		
+   		   		$('#list').html(value);
+   		   
+   		   		let total = null;
+				let dtotal = null;
+   		   		for(let j in list){
+   		   			
+   		   			total += Number($('[name="ChangePrice'+j+'"]').html());
+   		   			
+   		   			console.log(total)
+   		   			
+   		   		}
+   		   		if(list.length != 0){
+				dtotal = total + 2500
+   		   		$('#totalPrice').html(dtotal); 
+   		   		$('[name="total0"]').val(dtotal);
+   		   		$('#total1').html(total); 
+   		   		$('#dPrice2').html(2500);
+   		   		
+   		   		console.log($('[name="total0"]').val())
+   		   				console.log("토탈" + $('[name="total0"]').val())
+   		   		}
+ 		   		
+   		   				
+   		   		} <%-- success --%>
 
-
-                                    <a href="/memberCartItem/deleteItems?cartItemIds[]=18170189112&amp;itemStatus=CHECKED" data-url="/memberCartItem/deleteItems?cartItemIds[]=18170189112&amp;itemStatus=CHECKED" data-all="false" class="delete-option"><span class="sr-only">앤나인 Hipods Mini 데일리 블루투스 이어폰, 화이트 상품삭제</span></a>
-                                    
-                                        
-                                    
-                                </div>
-                            </div>
-                           
-                    </td>
-                    
-                    <td class="unit-total-price">
-	                    
-			
-				<div class="unit-total-sale-price" name="ChangePrice"><%=c.getPPrice() %></div>
-			
-
-                    </td>
-                    
-	                    <td class="delivery-fee" rowspan="1" headers="th-delivery-fee">
-                            
-                                <span class="delivery-fee__free"><%=cd.dPrice %>원</span>
-                            
-                        </td>
-                    
-                
-            </tr>
-	        
-        
-        <tr class="special-gift-area" style="display: none;">
-            
-        </tr>
-        <tr class="bundle-price-total">
-            <td colspan="5">
-                
-                <span class="rocket-total-price-area">
-					상품가격 <span class="total-product-price number"  name="ChangePrice" ><%= c.getPPrice() %></span>원 <span class="coupon-area">
-                    
-                    <span class="symbol symbol-plus"><span class="sr-only">더하기</span></span>
-					배송비 <span id="rocket-delivery-charge" class="delivery-charge"><strong><%=cd.dPrice %>원</strong></span>
-					<span class="symbol symbol-equal"><span class="sr-only">결과는</span></span>
-					주문금액
-                  
-                    <span class="total-order-price number"  name="ChangePrice2"><%=c.getPPrice()%></span>원
-                  
-				</span>
-            </span></td>
-        </tr>
-    
-    </tbody>
-
-            
-        </table>
-        
+   	   		,
+		   	   	error:function(){
+			   		console.log("ajax통신실패");
+			   		
+				}
+   		})
+   	})
+   	
+   		function totDPrice(){
+ 		  			let dp = 0;
+ 		  			if($('#listLe') != null){
+ 		  				dp = 2500;
+ 		  			}else{
+ 		  			return dp;
+ 		  			}
+   		  		}
+   </script>
+        <%-- 여기까지 반복 --%>
            
 
             
@@ -521,46 +604,32 @@
                         </h2>
 
                         총 상품가격
-                        <em class="final-product-price">0</em>원
+                        <em class="final-product-price" id="total1">0</em><b>원</b>
                         <span class="final-sale-area">
                         
                         </span>
 
                         <span class="symbol-plus1"><span class="sr-only">더하기</span></span>
                         총 배송비
-                        <em class="final-delivery-charge">0</em>원
+                        <em class="final-delivery-charge" id="dPrice2">0</em><b>원</b>
                         <span class="symbol-equal1"><span class="sr-only">결과는</span></span>
                         총 주문금액
-                        <em class="final-order-price" data-final-order-price="0">
-                          0원
-                        </em>
-                    </div>
-
-                    <div id="ccidArea" class="ccid-area" style="display: none;">
-                        <span class="ccid-amount">
-                          카드 즉시할인 예상금액 (<em id="ccidAmount">0</em>원 할인)
-                        </span>
-                        <span class="adjustment-price" id="adjustmentPrice">
-                          <em>0</em>원
-                        </span>
+                        <em class="final-order-price" id="totalPrice">
+                          0
+                        </em><b>원</b>
                     </div>
                 </div>
-
-                
             </div>
    
 
             
             <div class="order-buttons">
                 <a id="continueShoopingBtn" class="goShopping logging" href=<%=request.getContextPath()%>>계속 쇼핑하기</a>
-                <a href="<%=request.getContextPath() %>/productPayment.do" class="goPayment" id="btnPay"><strong>구매하기</strong></a>
+                <button class="goPayment" id="btnPay"><strong>구매하기</strong></button>
                 <div class="item-disabled" style="display: none;"></div>
             </div>
         
-        <form>
-       	 <input type="hidden" id="title" value="<%=c.getPId()%>">	
-       	 <input type="hidden" id="price" value="<%=c.getPoPrice()%>">	
-        </form>
+       
     
     <iframe id="ab_iframe" class="ab_test"width="0" height="0"></iframe> <!-- 여백설정 -->
     
@@ -569,64 +638,80 @@
 
     </section>
     <jsp:include page = "../common/footer.jsp"/>
+    
     <script type="text/javascript">
     
-    $('[name="amountChange"]').change(function(){ 
+    
+    function change(value, name){
     	
-		let q = $('[name="amountChange"]').val();
-		let name = $('#title').val();
-		let p = $('[name="amountChange"]').val() * $('#price').val();
-		let result = $('[name="amountChange"]').val() * $('#price').val();
-		
-		console.log(result)
-		console.log($('[name="amountChange"]').val())
-		console.log($('#price').val())
-		console.log(q)
-		console.log(name)
-		console.log(price)
-	
-		$.ajax({
+		let String = name; // 값이 바뀐 select 이름
+
+    	let count = value; // 바뀐 갯수
+    	let index = String.charAt(String.length-1); // 몇변째상품의 select인지 인덱스 찾기
+    	
+    	let original = $('#original'+index+'').html(); // 값이 바뀐 상품의 1개당 가격 칸
+    	let totprice2 = $('[name="twochangePrice'+index+'"]').html(); // 노란색칸 상품금액(origianl * count) 칸
+    	let pid = $('[name="title'+index+'"]').val(); // 갯수바뀐상품의 상품번호 칸
+    	let changetotal = $('[name="changetotal'+index+'"]').html(); // 노란색칸 주문금액(origianl * count + 2500)	칸
+    	
+    	let result = original * count
+    	console.log(result)
+    	// 바뀐갯수와 * 1개당 가격 => DB에 들어갈 총금액
+    	
+    	
+    	$.ajax({
 			
 			url: "amountChange.do",
 			
 			type: "get",
 			
 			data:{
-				q:q,
-				name:name,
-				p:p
+					q:count,
+					name:pid,
+					p:result
 	
-			},
+				},
 			
 			success:function(){
 				
-				$('#changePrice').html(result);
-				$('[name="ChangePrice"]').html(result);
-				$('[name="ChangePrice2"]').html(result+2500);
-				console.log(result)
+				console.log("성공")
+				$('[name="ChangePrice'+index+'"]').html(result);
+				$('[name="twochangePrice'+index+'"]').html(result);
+				$('[name="changetotal'+index+'"]').html(result+2500);
 				
 			},
 			
 			error:function(){
 		   			console.log("ajax통신실패");
-		   			console.log(result)
+		   			
 		   		}
-
-			
-		})
 		
-	})
-	
-	
-	window.onload = function(){ 
-		
-		let result = $('[name="amountChange"]').val() * $('#price').val();
-	
-		$('[name="ChangePrice2"]').html(result+2500);
+			})
 			
-		}
-	
+		
+	}
     </script>
+   
+   <script>
+   	$('#btnPay').click(function(){
+   		
+   		$('#listInfo0').submit();
+   		<%--location.href="<%=request.getContextPath()%>/orderList.do";--%>
+   		
+   		<%--location.href="<%=request.getContextPath()%>/paymentMember.do";--%>
+   		
+   		
+   	})
+   		
+   	 
+   	function deleteProduct(pId){
+   		
+   		location.href="<%=request.getContextPath()%>/deleteCartProduct.do?pId="+pId;
+   	}
+   	
+   
+   	
+   </script>
     
 </body>
 </html>

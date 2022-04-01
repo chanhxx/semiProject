@@ -157,6 +157,8 @@ public class BoardDao {
 			pstmt.setString(3, b.getBoardContent());
 			pstmt.setString(4, b.getBoardPwd());
 			
+			//System.out.println("board === dao === " + b);
+			
 			result = pstmt.executeUpdate(); // result 에 담아주기
 			
 		} catch (SQLException e) {
@@ -251,9 +253,14 @@ public class BoardDao {
 							  rset.getString("CATEGORY"),
 							  rset.getString("BOARD_CONTENT"),
 							  rset.getString("BOARD_SECRET"),
-							  rset.getString("BOARD_PWD"),							  
+							  rset.getString("BOARD_PWD"),
 							  rset.getInt("COUNT"),
 							  rset.getDate("CREATE_DATE"));
+			}
+			
+			// 게시글 작성자가 null이면 즉, 비회원이면 비회원으로 set
+			if(b.getBoardWriter() == null) {
+				b.setBoardWriter("비회원");
 			}
 			
 			//System.out.println("b.getBoardWriter() : " + b.getBoardWriter());

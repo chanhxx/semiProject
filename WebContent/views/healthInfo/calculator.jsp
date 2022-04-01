@@ -7,6 +7,10 @@
 <head>
 <meta charset="UTF-8">
 <title>칼로리 계산기/일일 권장 영양 섭취 계산기</title>
+<!-- google font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
 .frms input[type="text"], select {
 	background: none repeat scroll 0 0 #fff;
@@ -18,20 +22,26 @@
 	padding: 0 0.5%;
 	width: 90%;
 }
+div {
+	
+	
 
-.hidden{
-	display:none;
 }
-
+#wrap{
+	text-align: center;
+	padding: 20px;
+	margin: 15px;
+}
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 </head>
 
-<body>
+<body  style=background:#f8f8f8 >
 	<jsp:include page = "../common/menu.jsp"/>
-
-	<div class="container px-4 px-lg-5 mt-5" align='center' style=background:#f8f8f8 >
+	
+	<div id="wrap">
+	<div class="container px-4 px-lg-5 mt-5" align='center'>
 		<table id ='tab' align='center' style="width:60%;">
 			<tr>
 				<td align=center><h3>일일 권장 칼로리 계산기</h3>
@@ -173,14 +183,15 @@
 
 	<section class="py-5">
        <div class="container px-4 px-lg-5 mt-5" align='center' style=background:#f8f8f8 >
-       	   <h3>추천상품</h3>
+       	   <h3>추천 상품</h3>
        	   <br>
            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" id="list">
            		<!-- 추천상품 삽입 -->
            </div>
        </div>
    </section>
-
+   </div>
+   
 	<script>
 		
 		$(function(){
@@ -233,15 +244,16 @@
    		   				
 
 						value += '<div class="col mb-5">'+
-						'<div class="card h-100">'+
-						'<a href="<%=request.getContextPath() %>/detailProduct.do?no='+list[i].pId+'"><img class="card-img-top" src="<%=request.getContextPath() %>/resources/image/'+list[i].piName+'" alt="상품이미지" /></a>'+
-						'<div class="card-body p-4">'+
-						'<div class="text-center">'+
-						'<h5 class="fw-bolder">'+list[i].pName+'</h5>'+list[i].pPrice+'</div>'+
-						'</div>'+
-						'<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">'+
-						'<div class="text-center"><a class="btn btn-outline-dark mt-auto" href="<%=request.getContextPath() %>/detailProduct.do?no='+list[i].pId+'">상세정보</a></div>'+
-						'</div></div></div>';
+								'<div>'+
+									'<a href="<%=request.getContextPath() %>/detailProduct.do?no='+list[i].pId+'"><img class="card-img-top" src="<%=request.getContextPath() %>/resources/image/'+list[i].piName+'" alt="상품이미지" /></a>'+
+									'<div class="card-body p-4">'+
+										'<div class="text-center">'+
+											'<h5 class="fw-bolder">'+list[i].pName+'</h5>'+list[i].pPrice+'</div>'+
+										'</div>'+
+										'<div class="card-footer p-4 pt-0 border-top-0 bg-transparent">'+
+										'<div class="text-center"><a class="btn btn-outline-dark mt-auto" href="<%=request.getContextPath() %>/detailProduct.do?no='+list[i].pId+'">상세정보</a></div>'+
+									'</div>'+
+								'</div></div>';
 
    		   				
 					}
@@ -291,7 +303,7 @@
 			let pneed; // 단백질
 			let bmr; // 비만도
 			
-			// 나이, 키(cm), 몸부계
+			// 나이, 키(cm), 몸
 			let age = parseInt($("#age").val());
 			let cm = $("#cen").val();
 			let weight= $("#weight").val();

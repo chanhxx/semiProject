@@ -19,6 +19,14 @@ height:50px;
 width:70px;
 height:50px;
 }
+body{
+background-image:url('https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2F20150404_201%2Fbbilla_1428082120293qFxQp_JPEG%2F%25C7%25CF%25B3%25AA%25BE%25B2%25B9%25D9%25C5%25C1%25C8%25AD%25B8%25E9_05_1920x1080_20150402-01.jpg&type=a340')
+}
+#joinBtn{
+width: 120px;
+background-color : #64FE2E;
+color : blue;
+}
 </style>
 
 <body>
@@ -28,7 +36,7 @@ height:50px;
 		
 		<h2 align="center">계정만들기</h2>
 		
-		<form id="newFace" action="<%=request.getContextPath() %>/insertMember.do" method="post">
+		<form id="enrollForm" action="<%=request.getContextPath() %>/insertMember.do" method="post" onsubmit="return joinValidate();">
 			<table align="center" width="750px">
 				<tr>	
 				<td>아이디</td>			
@@ -57,20 +65,20 @@ height:50px;
 				
 				<tr>
 					<td>주소</td>	
-					<td><input type="text" name="address" id="address" placeholder="주소를 입력하세요"></td>
+					<td><input type="text" name="address" id="address" placeholder="주소를 입력하세요" required></td>
 					<td><input type="button" id="waddress" value ="주소입력!" ></input></td>
 		
 				</tr>
 				<tr>
 					<td>전화번호(-포함)</td>	
-					<td><input type="tel" maxlength="13" name="phone" placeholder="전화번호 입력해주세요(-입력)010-1234-5678"></td>
+					<td><input type="tel" maxlength="13" name="phone" placeholder="전화번호 입력해주세요(-입력)010-1234-5678" oninput="Hyphen(this)" required></td>
 					<td></td>
 				</tr>	
 				
 			</table>
 			<br>
 			<div class="btns" align="center">				
-				<button type="submit" id="joinBtn" disabled>가입하기</button>
+				<button type="submit" id="joinBtn" onclick="insert()" hidden >가입하기</button>
 			
 				
 			</div>
@@ -78,39 +86,33 @@ height:50px;
 	
 	</div>
 	<script>
+	//키발급 필요없음,사용량 제한없음,상업적으로 써도 상관없음 
 	   window.onload = function(){
     document.getElementById("waddress").addEventListener("click", function(){ 
        new daum.Postcode({
-       oncomplete: function(data) { //선택시 입력값 세팅
-           document.getElementById("address").value = data.address; // 주소 넣기        
+       oncomplete: function(data) { 
+           document.getElementById("address").value = data.address; //선택 주소 넣기        
        }
    }).open();
 });
 }
 	
-	function joinValidate(){
-		
-		if(!(/^[a-z][a-z\d]{3,11}$/i.test($("#enrollForm input[name=userId]").val()))){
-			$("#enrollForm input[name=userId]").focus();
-	        return false;
-		}
-		
+	   function joinValidate(){
+			
+	
 		if($("#enrollForm input[name=userPwd]").val() != $("#enrollForm input[name=checkPwd]").val()){
-			$("#pwdResult").text("비밀번호 불일치").css("color", "red");
-			return false;			
+			$("#pwdResult").text("비밀번호가달라요").css("color", "red");
+			return false;		
 		}
 		
-		 if(!(/^[가-힣]{2,}$/.test($("#enrollForm input[name=userName]").val()))){
-			 $("#enrollForm input[name=userName]").focus();
-	        return false;
-		 }
-		 
+				
+		window.alert("회원가입 성공 환영해요(ノ・∀・)ノ");
 		 return true;
 		
 		
 	}
 	function checkId(){
-		var userId = $("#newFace input[name=userId]");
+		var userId = $("#enrollForm input[name=userId]");
 		
 		if(userId.val() ==""){
 			alert("아이디를 입력해주세요")
@@ -129,7 +131,7 @@ height:50px;
 				}else{
 					if(confirm("사용가능한 아이디입니다.")){
 						userId.attr("readonly","true");
-						$("#joinBtn").removeAttr("disabled");
+						$("#joinBtn").removeAttr("hidden");
 					}else{
 						userId.focus();
 					}
@@ -142,8 +144,17 @@ height:50px;
 		
 	}
 
+	
+	const Hyphen = (target) => {
+		 target.value = target.value
+		   .replace(/[^0-9]/g, '') //숫자가아니면 안됨 
+		  .replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3").replace(/(\-{1,2})$/g, ""); //3~4~4면 3-4-4로되게 //
+		}
 	</script>
+<script>
 
+
+</script>
 
 
 </body>

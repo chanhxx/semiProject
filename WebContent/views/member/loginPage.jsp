@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import = "com.uni.member.model.vo.Member" %>
- <%
- 	Member loginUser = (Member)session.getAttribute("loginUser");
- %>
+    <%@ page import = "com.uni.member.model.vo.Member" %>
+    <%
+    Member loginUser = (Member)session.getAttribute("loginUser");
+     
+    %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +12,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script
+   src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+   
+    
     <link rel="stylesheet" href="../resource/css/main.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
@@ -33,9 +39,20 @@
         letter-spacing: 0.05rem;
         padding: 0.75rem 1rem;
       }
+      .btn-insert {
+        font-size: 0.9rem;
+        letter-spacing: 0.05rem;
+        padding: 0.3rem 0.5rem;
+      }
+  ul{
+   list-style:none;
+   }
+   #kakao{
+   margin-left: 28%;
+   }
     </style>
 </head>
-<body >
+<body>
     
 
     <div class="container-fluid ps-md-0">
@@ -67,19 +84,92 @@
       
                       <div class="d-grid">
                         <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="submit" width="40%">Sign in</button>
+                    </div>
                         </form>
                         
+                       
                         <div class="text-center">
-                          <button id = "enrollBtn" type="button" onclick="enrollPage();">회원가입</button>
+                        <button class="btn btn-lg btn-primary btn-insert text-uppercase fw-bold mb-1" type="submit" width="40%" onclick="findid();">아이디및비밀번호 찾기</button>                   
+                          <button class="btn btn-lg btn-primary btn-insert text-uppercase fw-bold mb-1" id = "enrollBtn" onclick="enrollPage();">회원가입</button>
                           <script>
                            function enrollPage(){
     	                    location.href = "<%= request.getContextPath()%>/newfacego.do"; 
-                                   } 
+                                   }                      
+                           function findid(){
+                               location.href = "<%= request.getContextPath()%>/findid"; 
+                                      }
+                         
+                           
                           </script>
                         </div>
-                       
+                     
                       </div>
-      
+  <div id="kakao">      
+   <ul>
+ 
+	<li onclick="kakaoLogin();">
+      <a href="javascript:void(0)">
+         <img src="https://www.gb.go.kr/Main/Images/ko/member/certi_kakao_login.png" style="height:60px;,width:60px;">
+      </a>
+	</li>
+ 
+
+	<li onclick="kakaoLogout();">
+      <a href="javascript:void(0)">
+          <span>.</span>
+      </a>
+	</li>
+</ul>
+</div>
+<script>
+function login(){
+	 location.href = "<%= request.getContextPath()%>/LoginPage.do"; 
+}
+
+Kakao.init('41b691f572c4e925ecf7ab3d3c7a8b8f'); //카카오에서 제공해주는 앱키
+function kakaoLogin() {
+    Kakao.Auth.login({
+      success: function (res) {
+        Kakao.API.request({ // 카카오에있는 api를 가죠오고
+          url: '/v2/user/me', // 여기서 유저정보를 res로받아온다 
+          success: function (res) {       	  
+        	  $.ajax({
+                  url:"<%=request.getContextPath()%>/main.do",
+                  data:{"id":res.id}, //JSON.stringify문자열로 반환
+                  Type:"post",
+                  success:function(data){
+                      //성공적으로 하고나면 이동할 url
+                      location.href="<%=request.getContextPath()%>";
+                  }
+                  
+               });			 
+        		
+        	 
+          },
+        
+        })
+      },
+      fail: function (error) {
+        console.log(error)
+      },
+    })
+  }
+//카카오로그아웃  
+function kakaoLogout() {
+    if (Kakao.Auth.getAccessToken()) {
+      Kakao.API.request({
+        url: '/v1/user/unlink',
+        success: function (response) {
+        	console.log(response)
+        },
+        fail: function (error) {
+          console.log(error)
+        },
+      })
+      Kakao.Auth.setAccessToken(undefined)
+    }
+  }  
+</script>
                     
                   </div>
                 </div>

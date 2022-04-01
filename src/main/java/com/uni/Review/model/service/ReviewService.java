@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import com.uni.Review.model.dao.ReviewDao;
 import com.uni.Review.model.vo.Review;
-
+ 
 
 public class ReviewService {
 
@@ -22,26 +22,11 @@ public class ReviewService {
 		return result;
 	}
 
-	public int InsertReview(Review r) {
+	public int deleteReview(Review r) {
 		
 		Connection conn = getConnection();
 		
-		int result = new ReviewDao().inserReview(conn, r);
-		
-		if(result > 0) {
-			commit(conn);
-		} else {
-			rollback(conn);
-		}
-		close(conn);
-		return result;
-	}
-
-	public int deleteReview(int oId, int pId) {
-		
-		Connection conn = getConnection();
-		
-		int result = new ReviewDao().deleteReview(conn, oId, pId);
+		int result = new ReviewDao().deleteReview(conn, r);
 		
 		if(result > 0) {
 			commit(conn);
@@ -62,5 +47,54 @@ public class ReviewService {
 		
 		return list;
 	}
+
+	public ArrayList<Review> topReviewList() {
+		
+		Connection conn = getConnection();
+		
+		ArrayList<Review> list = new ReviewDao().topReviewList(conn);
+		
+		close(conn);
+		
+		return list;
+	}
+
+	public ArrayList<Review> myReviewList(int userNo) {
+		
+		Connection conn = getConnection();
+		
+		ArrayList<Review> list = new ReviewDao().myReviewList(conn, userNo);
+		
+		close(conn);
+		
+		return list;
+	}
+
+	public int insertReview(Review r) {
+		
+		Connection conn = getConnection();
+		
+		int result = new ReviewDao().inserReview(conn, r);
+		
+		if(result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		close(conn);
+		return result;
+	}
+
+	public ArrayList<Review> checkReview(int no) {
+		
+		Connection conn = getConnection();
+		
+		ArrayList<Review> list = new ReviewDao().checkReview(conn, no);
+		
+		close(conn);
+		
+		return list;
+	}
+	
 
 }

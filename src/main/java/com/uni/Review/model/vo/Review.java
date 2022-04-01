@@ -1,7 +1,7 @@
 package com.uni.Review.model.vo;
 
-import java.util.Date;
-
+import java.sql.Date;
+ 
 public class Review {
 	
 	private int rId;
@@ -10,6 +10,9 @@ public class Review {
 	private String rName;
 	private String rContent;
 	private Date rUpdate;
+	private String piName;
+	private String pName;
+	private int userNo;
 	
 	public Review() {
 		// TODO Auto-generated constructor stub
@@ -17,6 +20,12 @@ public class Review {
 	
 	public Review(int orderNo) {
 		this.orderNo = orderNo;
+	}
+	
+	public Review(int orderNo, int userNo, int pId) {
+		this.orderNo = orderNo;
+		this.userNo = userNo;
+		this.pId = pId;
 	}
 	
 	public Review(int orderNo, int pId, String rName, String rContent) {
@@ -27,13 +36,19 @@ public class Review {
 		
 	}
 	
+	public Review(int orderNo, int pId, String rName, String rContent, int userNo) {
+		this(orderNo);
+		this.pId = pId;
+		this.rName = rName;
+		this.rContent = rContent;
+		this.userNo = userNo;
+	}
+	
 	public Review(int rId, int orderNo, int pId, String rName, String rContent, Date rUpdate) {
 		this(orderNo, pId, rName, rContent);
 		this.rId = rId;
 		this.rUpdate = rUpdate;
 	}
-
-	
 
 	public int getrId() {
 		return rId;
@@ -82,12 +97,40 @@ public class Review {
 	public void setrUpdate(Date rUpdate) {
 		this.rUpdate = rUpdate;
 	}
+	
+	public String getPiName() {
+		return piName;
+	}
+
+	public void setPiName(String piName) {
+		this.piName = piName;
+	}
+
+	public String getpName() {
+		return pName;
+	}
+
+	public void setpName(String pName) {
+		this.pName = pName;
+	}
+	
+	public int getUserNo() {
+		return userNo;
+	}
+
+	public void setUserNo(int userNo) {
+		this.userNo = userNo;
+	}
 
 	@Override
 	public String toString() {
 		return "Review [rId=" + rId + ", orderNo=" + orderNo + ", pId=" + pId + ", rName=" + rName + ", rContent="
-				+ rContent + ", rUpdate=" + rUpdate + "]";
+				+ rContent + ", rUpdate=" + rUpdate + ", piName=" + piName + ", pName=" + pName + "]";
 	}
+
+	
+
+	
 	
 	
 }

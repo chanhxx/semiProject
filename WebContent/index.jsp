@@ -1,28 +1,37 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%  String kakao =   (String)request.getAttribute("kakao");  %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
- <meta charset="utf-8" />
- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
- <meta name="description" content="" />
- <meta name="author" content="" />
-</head>
-<body style=background:#f8f8f8>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="description" content="" />
+<meta name="author" content="" />
 
-	<!-- popup -->
+<style>
+	#a{text-decoration:none !important;}
+	#d{color:black;}
+</style>
+
+</head>
+
+<body style=background:#f8f8f8>
+   
+   	<!-- popup -->
 	<jsp:include page = "views/common/popup.jsp"/>
 	
-	<!-- menu -->
+   	<!-- menu -->
    	<jsp:include page = "views/common/menu.jsp"/>
-   	
-   	<!-- header -->
-   	<jsp:include page = "views/common/header.jsp"/>
 	
-    
-	<section class="py-5">
-       <div class="container px-4 px-lg-5 mt-5">
-           <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" id="list">
+	<!-- header -->
+   	<jsp:include page = "views/common/header.jsp"/>
+
+
+   	<section class="py-5">
+		<div class="container px-4 px-lg-5 mt-5">
+			<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" id="list">
+           	
            		<!-- 대표상품 삽입 장소 -->
            </div>
        </div>
@@ -30,7 +39,7 @@
    
    
    	<script>
-		$(function(){
+   		$(function(){
    			
    			$.ajax({
    		   		url: "topProduct.do",
@@ -44,7 +53,7 @@
    		   			for(var i in list){
    		   			  		   				
    		   			value += '<div class="col mb-5">'+
-							'<div class="card h-100">'+
+							'<div>'+
 							'<a href="<%=request.getContextPath() %>/detailProduct.do?no='+list[i].pId+'"><img class="card-img-top" src="<%=request.getContextPath() %>/resources/image/'+list[i].piName+'" alt="상품이미지" /></a>'+
 		
 							'<div class="card-body p-4">'+
@@ -63,11 +72,11 @@
    		   			console.log("ajax통신실패");
    		   		}
    	   		})
-		})
+   		})
 	</script>
    
-   
-	<div class="container px-4 px-lg-6 mt-10" id="reviewdiv">
+   	
+   	<div class="container px-4 px-lg-6 mt-10" id="reviewdiv">
 		<div class="owl-carousel owl-theme owl-loaded">
 			<div class="owl-stage-outer text-center" >
 		 		<h3>실제 구매한 고객님이 남긴</h3>
@@ -87,7 +96,7 @@
 			$.ajax({
    		   		url: "topReview.do",
    		   		
-   		   		type: "get",
+   		   		type: "post",
    		   		
    		   		success:function(list){
    		   			
@@ -118,8 +127,8 @@
 		   		   		
 		   			    let owl = $('.owl-carousel');
 		   			    
-		   			    owl.owlCarousel({
-		   			        items:5,                 // 한번에 보여줄 아이템 수
+		   			    owl.owlCarousel({            // OWL Carousel API 호출, 사용할 옵션
+		   			        items:5,                 // 윈도우 너비에 한번에 보여줄 최대 아이템 수
 		   			        loop:true,               // 반복여부
 		   			        margin:15,               // 오른쪽 간격
 		   			        autoplay:true,           // 자동재생 여부
@@ -127,28 +136,21 @@
 		   			        autoplayHoverPause:true  // 마우스오버시 멈출지 여부
 		   			    });    
 		   			    
-		   			    $('.customNextBtn').click(function() {
-		   			        owl.trigger('next.owl.carousel');
-		   			    })
-		   			    
-		   			    $('.customPrevBtn').click(function() {
-		   			        owl.trigger('prev.owl.carousel', [300]);
-		   			    })
 		   			}); 
 	   		    }
 
-			})
+   	   		})
 		
 		})
 		
-	</script>
+   </script>
    
-	<br><br><br><br>
+   <br><br><br><br>
    
    
-	<!-- Footer-->
-	<jsp:include page = "views/common/footer.jsp"/>
+   <!-- Footer-->
+   <jsp:include page = "views/common/footer.jsp"/>
 
    
- </body>
+</body>
 </html>

@@ -210,17 +210,17 @@
 	                    
 	                    <%-- list가 비어있지 않으면 --%>
 	                    <c:if test="${ !empty list }">
-	                    	<%-- for문 안에서 사용할 변수명과 배열 set --%>
-		                	<c:set var="list" value="${list}"/>
+	                    	<%--<c:forEach var="i" begin="0" end="${list.size()-1}" step="1"> --%>
+		                	<%-- items : 반복문 안에서 사용할 배열 --%>
 		                	<%-- varStatus : 반복 횟수 변수명 --%>
 		                	<c:forEach items="${list}" varStatus="st">
 			                 	<%-- st.index : 0부터 순서대로 인덱스 실행 --%>
 			                 	<tr>
-			                     <td>${list[st.index].noticeNo}</td>
-			                     <td>${list[st.index].noticeTitle}</td>
-			                     <td>관리자</td>
-			                     <td>${list[st.index].count}</td>
-			                     <td>${list[st.index].createDate}</td>
+			                    	<td>${list[st.index].noticeNo}</td>
+			                    	<td>${list[st.index].noticeTitle}</td>
+			                    	<td>관리자</td>
+			                    	<td>${list[st.index].count}</td>
+			                    	<td>${list[st.index].createDate}</td>
 			                   	</tr>
 			                 </c:forEach>
 			            </c:if>
@@ -327,22 +327,7 @@
 	   			})
 	   		})
    		</c:if>
-			
-		/*
-		// 폼 제출 시
-		$("form").submit(function() {
-			
-			let input = $("#search").val();
-			
-			console.log(input);
-			// 검색창 비어 있으면 공지사항 리스트 페이지 다시 호출
-			if(input == "") {
-				//$(this).removeAttr("action");
-			} else {
-					
-			}
-			
-		})*/
+		
 	</script>
 	
 
