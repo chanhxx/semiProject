@@ -114,7 +114,7 @@ public class BoardDao {
 					b.setBoardWriter(b.getBoardWriter().substring(0,3) + "***");
 				}
 				
-				list.add(b); // list에 notice 객체 담기
+				list.add(b); // list에 Board 객체 담기
 			}
 			
 		} catch (SQLException e) {

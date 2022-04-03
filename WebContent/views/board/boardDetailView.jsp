@@ -300,13 +300,6 @@
 
 	<script>
 	
-		// 댓글 입력 클릭 시
-		$("#addReply").click(function() {
-			// 댓글 내용 변수에 담아서
-			let replyContent = $("#replyContent").val();
-			
-			
-		})
 	
 		// 댓글 입력
 		$(function() {
@@ -369,23 +362,23 @@
 				
 				type: "get",
 				
-				success: function(list){
+				success: function(list) {
 					
-					console.log(list);
-					
-					var value="";
-					
-					<%-- a 태그에서의 함수 호출 : 함수에 리턴값이 있던 없던 클릭해도 페이지의 최상위로 이동하지 않음 --%>
-					for(var i in list){
-						
-						value += '<tr>'+
-									'<td width="300px" class="replyContent">'+ list[i].replyContent +'</td>' +
-									'<td width="120px" class="replyDate">'+ list[i].createDate +'</td>' +
-									<%-- 댓글 삭제 관리자만 할 수 있도록 조건 설정 --%>
-									<c:if test="${ !empty sessionScope.loginUser && sessionScope.loginUser.userId == 'admin'}">
-										'<td align="center" width="50px"><a href="javascript:void(0);" onClick="deleteConfirm(' + list[i].replyNo + ');">삭제</a></td>' +
-									</c:if>
-								 '</tr>';
+							console.log(list);
+							
+							var value="";
+							
+							<%-- a 태그에서의 함수 호출 : 함수에 리턴값이 있던 없던 클릭해도 페이지의 최상위로 이동하지 않음 --%>
+							for(var i in list){
+								
+								value += '<tr>'+
+											'<td width="300px" class="replyContent">'+ list[i].replyContent +'</td>' +
+											'<td width="120px" class="replyDate">'+ list[i].createDate +'</td>' +
+											<%-- 댓글 삭제 관리자만 할 수 있도록 조건 설정 --%>
+											<c:if test="${ !empty sessionScope.loginUser && sessionScope.loginUser.userId == 'admin'}">
+												'<td align="center" width="50px"><a href="javascript:void(0);" onClick="deleteConfirm(' + list[i].replyNo + ');">삭제</a></td>' +
+											</c:if>
+										 '</tr>';
 					}
 					
 					$("#replyList").html(value);

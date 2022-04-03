@@ -153,6 +153,7 @@
 	
 	<script>
 	
+		 
 	    let oEditors = []
 	
 	    smartEditor = function() {
@@ -161,7 +162,7 @@
 	        	oAppRef: oEditors,
 	        	// 에디터가 들어갈 textarea id
 	        	elPlaceHolder: "content",
-	        	// html editor skin url
+	        	// html 에디터 스킨 경로
 	        	sSkinURI: "<%=request.getContextPath()%>/resources/smarteditor/SmartEditor2Skin.html",
 	        	
 	        	htParams : {
@@ -170,19 +171,8 @@
 		        	// 입력창 크기 조절바 사용 여부
 					bUseVerticalResizer : true,
 					// 모드 탭(Editor | HTML | TEXT) 사용 여부
-					bUseModeChanger : true,
-					
-					fOnBeforeUnload : function(){
-						alert("완료!");
-					}
-				}, //boolean
-				
-				fOnAppLoad : function(){
-					//예제 코드
-					//oEditors.getById["ir1"].exec("PASTE_HTML", ["로딩이 완료된 후에 본문에 삽입되는 text입니다."]);
-				},
-				
-	        	fCreator: "createSEditor2"
+					bUseModeChanger : true
+				}
 	      	})
 	    }
 		
@@ -194,7 +184,8 @@
 	    
 		// 폼 제출 시 카테고리, 내용, 비밀번호 비어 있으면 알림창 띄우기
 		$("form").submit(function() {
-			// 에디터 내용을 텍스트박스에 업데이트
+			// 에디터 내용을 textarea에 업데이트
+			// 이 코드가 먼저 실행되어야 textarea 값이 변수에 제대로 담김
 	    	oEditors.getById["content"].exec("UPDATE_CONTENTS_FIELD", []);
 			
 			// 제목, 내용 값을 변수에 담아서
@@ -213,10 +204,11 @@
 				return false;
 			
 			// 내용이 비어있는 경우
-			} else if(content == ""  || content == null || content == '&nbsp;' || content == '<p>&nbsp;</p>') {
+			} else if(content == "" || content == null || content == '&nbsp;'
+						|| content == '<p>&nbsp;</p>' || content == '<br>' || content == '<br/>') {
 				// 알림 띄우기
 				alert("내용을 입력해주세요.");
-				// 포커싱 주기
+				// 포커싱
    		    	oEditors.getById["content"].exec("FOCUS");
    		    	
 				return false;
